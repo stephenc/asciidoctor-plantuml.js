@@ -1,0 +1,5 @@
+= AsciidoctorJS Plantuml Extension
+
+Port of Asciidoctor Plantuml Extension[https://raw.githubusercontent.com/hsanson/asciidoctor-plantuml] to `Asciidoctor.JS`.
+
+Main intention to provide PlantUML[http://plantuml.com/] support for  Antora[https://antora.org/].

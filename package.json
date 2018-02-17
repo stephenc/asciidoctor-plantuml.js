@@ -1,6 +1,6 @@
 {
   "name": "asciidoctorjs-plantuml",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "PlantUML support for AsciidoctorJS powered projects.",
   "main": "asciidoctorjs-plantuml.js",
   "dependencies": {

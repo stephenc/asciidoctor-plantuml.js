@@ -1,0 +1,4 @@
+*.adoc
+*.css
+
+node_modules

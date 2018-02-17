@@ -1,4 +1,4 @@
-= AsciidoctorJS Plantuml Extension
+= Asciidoctor Plantuml Extension
 
 Port of https://raw.githubusercontent.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.JS].
 

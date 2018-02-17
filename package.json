@@ -1,8 +1,8 @@
 {
-  "name": "asciidoctorjs-plantuml",
-  "version": "1.0.4",
-  "description": "PlantUML support for AsciidoctorJS powered projects.",
-  "main": "asciidoctorjs-plantuml.js",
+  "name": "asciidoctor-plantuml",
+  "version": "0.0.1",
+  "description": "PlantUML support for Asciidoctor.JS.",
+  "main": "asciidoctor-plantuml.js",
   "dependencies": {
     "asciidoctor.js": "^1.5.6-preview.5",
     "plantuml-encoder": "^1.2.5"
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eshepelyuk/asciidoctorjs-plantuml.git"
+    "url": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git"
   },
   "keywords": [
     "asciidoctor",
@@ -25,7 +25,7 @@
   "author": "Evgeny Shepelyuk",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eshepelyuk/asciidoctorjs-plantuml/issues"
+    "url": "https://github.com/eshepelyuk/asciidoctor-plantuml.js/issues"
   },
-  "homepage": "https://github.com/eshepelyuk/asciidoctorjs-plantuml#readme"
+  "homepage": "https://github.com/eshepelyuk/asciidoctor-plantuml.js#readme"
 }

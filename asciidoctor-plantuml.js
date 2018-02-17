@@ -1,8 +1,8 @@
 var plantumlEncoder = require('plantuml-encoder')
 
-const plantumlUrl = process.env.PLANTUML_URL; 
+const PLANTUML_URL = process.env.PLANTUML_URL; 
 
-var createPlantumlBlock = function(parent, content, attrs) {
+function createPlantumlBlock(parent, content, attrs) {
     
     const opts = Opal.hash({
         "content_model": "raw", "source": content, "subs" : "default" 
@@ -11,8 +11,7 @@ var createPlantumlBlock = function(parent, content, attrs) {
     return Opal.Asciidoctor.Block.$new(parent, 'pass', opts);
 }
 
-var plantumlImgContent = function(url, attrs = Opal.hash({})) {
-//    console.log("attrs=", attrs);
+function plantumlImgContent(url, attrs = Opal.hash({})) {
     
     var content = "<!-- plantuml begin -->\n";
     content += '<div class="imageblock">';
@@ -28,25 +27,23 @@ var plantumlImgContent = function(url, attrs = Opal.hash({})) {
     return content;
 }
 
-var genUrl = function(text, format = "png") {
+function genUrl(text, format = "png") {
     var encoded = plantumlEncoder.encode(text)
-    return `${plantumlUrl}/${format}/${encoded}`;
+    return `${PLANTUML_URL}/${format}/${encoded}`;
 }
 
-module.exports = function AsciidoctorJS_PlantUML () {
-  this.block(function(){
-    const self = this;
-    
-      // self.useDsl();
-    self.named('plantuml');
-    self.onContext('listing');
-    //self.parse_content_as('simple');
+function plantumlBlock() {
+    this.named('plantuml');
+    this.onContext('listing');
 
-    self.process(function (parent, reader, attrs) {
+    this.process(function (parent, reader, attrs) {
         const lines = reader.getLines().join("\n");
         const url = genUrl(lines);
         return createPlantumlBlock(parent, plantumlImgContent(url, attrs), attrs);
     });
-  });
-};
+}
+
+module.exports.register = function register (registry) {
+  registry.block("plantuml", plantumlBlock);
+}
 

@@ -1,11 +1,10 @@
 {
   "name": "asciidoctorjs-plantuml",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "PlantUML support for AsciidoctorJS powered projects.",
   "main": "asciidoctorjs-plantuml.js",
   "dependencies": {
     "asciidoctor.js": "^1.5.6-preview.5",
-    "opal-compiler": "^1.0.0",
     "plantuml-encoder": "^1.2.5"
   },
   "devDependencies": {},

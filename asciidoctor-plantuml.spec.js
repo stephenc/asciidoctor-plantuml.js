@@ -41,10 +41,11 @@ alice -> bob
 
         const $$ = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
 
-        const ADOC = (url = LOCAL_URL) => {
+        const ADOC = (url = LOCAL_URL, attrs = ["plantuml"]) => {
+            let block = ["plantuml"].concat(attrs);
             return `
 ${url ? `:plantuml-server-url: ${url}` : ""}            
-[plantuml]
+[${block.join(",")}]
 ${PLANT_UML}
 `
         };
@@ -68,11 +69,7 @@ ${PLANT_UML}
         });
 
         it("should support named id attribute", function () {
-            const doc = `
-[plantuml,id=myId]
-${PLANT_UML}`;
-
-            expect($$(doc)("img.plantuml#myId").length).toEqual(1);
+            expect($$(ADOC(undefined, ["id=myId"]))("img.plantuml#myId").length).toEqual(1);
         });
 
     });

@@ -1,4 +1,4 @@
-describe("Asciidoctor PlantUML", function () {
+describe("Asciidoctor PlantUML extension", function () {
 
     const PLANTUML_LOCAL_URL = "http://localhost:8080";
 

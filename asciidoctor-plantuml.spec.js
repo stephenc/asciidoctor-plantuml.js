@@ -16,7 +16,7 @@ describe("Asciidoctor PlantUML", function () {
             registry = asciidoctor.Extensions.create();
         });
 
-        it("should register plantuml extension for listing", function () {
+        it("should register plantuml block for listing ctx", function () {
             expect(registeredForBlock).toThrowError(/nil/);
 
             plantuml.register(registry);

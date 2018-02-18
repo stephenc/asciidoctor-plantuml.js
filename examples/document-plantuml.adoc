@@ -1,9 +1,0 @@
-= title
-:plantuml-server-url: http://localhost:8080
-
-[plantuml,id=myId]
-----
-@startuml
-alice -> bob
-@enduml
-----

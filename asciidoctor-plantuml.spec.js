@@ -1,4 +1,3 @@
-
 describe("Asciidoctor PlantUML", function () {
     const DOCUMENT = `
 [plantuml]
@@ -35,21 +34,31 @@ alice -> bob
 
     describe("PlantUML server URL attribute", function () {
 
-        let registry;
-
-        beforeAll(function () {
-            registry = asciidoctor.Extensions.create();
-            plantuml.register(registry);
-        });
+        afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
         it("should not re-set attribute if not declared", function () {
-            const doc = asciidoctor.load("== Header2");
+            let registry = plantuml.register(asciidoctor.Extensions.create());
+            const doc = asciidoctor.load("== Header2", {extension_registry: registry});
             expect(doc.getAttribute("plantuml-server-url")).toBe(undefined);
         });
 
         it("should keep server url attribute when passed", function () {
-            const doc = asciidoctor.load("== Header2", {attributes: "plantuml-server-url=http://plantuml.org"});
+            let registry = plantuml.register(asciidoctor.Extensions.create());
+            const doc = asciidoctor.load("== Header2", {
+                attributes: "plantuml-server-url=http://plantuml.org",
+                extension_registry: registry
+            });
             expect(doc.getAttribute("plantuml-server-url")).toBe("http://plantuml.org");
+        });
+
+        it("should override server url from ENV var", function () {
+            process.env.PLANTUML_SERVER_URL = "http://localhost:8080";
+            let registry = plantuml.register(asciidoctor.Extensions.create());
+            const doc = asciidoctor.load("== Header2", {
+                attributes: "plantuml-server-url=http://plantuml.org",
+                extension_registry: registry
+            });
+            expect(doc.getAttribute("plantuml-server-url")).toBe("http://localhost:8080");
         });
     });
 

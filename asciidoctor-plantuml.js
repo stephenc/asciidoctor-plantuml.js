@@ -1,12 +1,8 @@
 const plantumlEncoder = require('plantuml-encoder');
 
-const PLANTUML_URL = process.env.PLANTUML_URL; 
-
 function createPlantumlBlock(parent, content, attrs) {
-    
-    const opts = Opal.hash({
-        "content_model": "raw", "source": content, "subs" : "default" 
-    }).$merge(attrs);
+
+    const opts = Opal.hash({content_model: "raw", source: content, subs: "default"}).$merge(attrs);
 
     return Opal.Asciidoctor.Block.$new(parent, 'pass', opts);
 }
@@ -19,7 +15,7 @@ function plantumlImgContent(url, attrs = Opal.hash({})) {
     content += '<img ';
     if (attrs.$fetch('id', undefined)) content += `id="${attrs.$fetch('id')}" `;
     content += `class="plantuml" src="${url}" `;
-    content += '/>'; 
+    content += '/>';
     content += '</div>';
     content += '</div>';
     content += "\n<!-- plantuml end -->\n";
@@ -27,10 +23,10 @@ function plantumlImgContent(url, attrs = Opal.hash({})) {
     return content;
 }
 
-function genUrl(text, format = "png") {
-    // parent.getDocument().getAttribute('plantuml-server-url');
+function genUrl(parent, text) {
+    const url = parent.getDocument().getAttribute("plantuml-server-url");
     const encoded = plantumlEncoder.encode(text);
-    return `${PLANTUML_URL}/${format}/${encoded}`;
+    return `${url}/png/${encoded}`;
 }
 
 function plantumlBlock() {
@@ -39,12 +35,23 @@ function plantumlBlock() {
 
     this.process(function (parent, reader, attrs) {
         const lines = reader.getLines().join("\n");
-        const url = genUrl(lines);
+        const url = genUrl(parent, lines);
         return createPlantumlBlock(parent, plantumlImgContent(url, attrs), attrs);
     });
 }
 
-module.exports.register = function register (registry) {
-  registry.block("plantuml", plantumlBlock);
+module.exports.register = function register(registry) {
+    registry.block("plantuml", plantumlBlock);
+    registry.treeProcessor(function () {
+        var self = this;
+        self.process(function (doc) {
+            if (process.env.PLANTUML_SERVER_URL) {
+                doc.removeAttribute("plantuml-server-url");
+                doc.setAttribute("plantuml-server-url", process.env.PLANTUML_SERVER_URL);
+            }
+            return doc;
+        });
+    });
+    return registry;
 };
 

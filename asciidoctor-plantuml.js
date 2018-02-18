@@ -9,8 +9,7 @@ function createPlantumlBlock(parent, content, attrs) {
 
 function plantumlImgContent(url, attrs = Opal.hash({})) {
 
-    let content = "<!-- plantuml begin -->\n";
-    content += '<div class="imageblock">';
+    let content = '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
     if (attrs.$fetch('id', undefined)) content += `id="${attrs.$fetch('id')}" `;
@@ -18,7 +17,6 @@ function plantumlImgContent(url, attrs = Opal.hash({})) {
     content += '/>';
     content += '</div>';
     content += '</div>';
-    content += "\n<!-- plantuml end -->\n";
 
     return content;
 }

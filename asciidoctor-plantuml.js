@@ -24,7 +24,7 @@ function plantumlImgContent(url, attrs = Opal.hash({})) {
 }
 
 function genUrl(parent, text) {
-    const url = parent.getDocument().getAttribute("plantuml-server-url");
+    const url = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
     const encoded = plantumlEncoder.encode(text);
     return `${url}/png/${encoded}`;
 }
@@ -42,16 +42,6 @@ function plantumlBlock() {
 
 module.exports.register = function register(registry) {
     registry.block("plantuml", plantumlBlock);
-    registry.treeProcessor(function () {
-        var self = this;
-        self.process(function (doc) {
-            if (process.env.PLANTUML_SERVER_URL) {
-                doc.removeAttribute("plantuml-server-url");
-                doc.setAttribute("plantuml-server-url", process.env.PLANTUML_SERVER_URL);
-            }
-            return doc;
-        });
-    });
     return registry;
 };
 

@@ -7,12 +7,11 @@ function createPlantumlBlock(parent, content, attrs) {
     return Opal.Asciidoctor.Block.$new(parent, 'pass', opts);
 }
 
-function plantumlImgContent(url, attrs = Opal.hash({})) {
-
+function plantumlImgContent(url, attrs) {
     let content = '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
-    if (attrs.$fetch('id', undefined)) content += `id="${attrs.$fetch('id')}" `;
+    // if (attrs.$fetch('id', undefined)) content += `id="${attrs.$fetch('id')}" `;
     content += `class="plantuml" src="${url}" `;
     content += '/>';
     content += '</div>';

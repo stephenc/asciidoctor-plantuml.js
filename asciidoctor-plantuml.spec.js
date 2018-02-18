@@ -8,7 +8,7 @@ describe("PlantUML for Asciidoctor", function () {
 = plantuml
 :plantuml-server-url: ${PLANTUML_LOCAL_URL}
 
-[plantuml,id=myId]
+[plantuml]
 ----
 @startuml
 alice -> bob
@@ -17,7 +17,7 @@ alice -> bob
 `;
 
     const DOC_NO_URL = `    
-[plantuml,id=myId]
+[plantuml]
 ----
 @startuml
 alice -> bob
@@ -60,12 +60,12 @@ alice -> bob
         afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
         it("should point image to document attr", function () {
-            expect(convertAndParse(DOC_LOCAL_URL)("img#myId").attr("src")).toContain(PLANTUML_LOCAL_URL);
+            expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_LOCAL_URL);
         });
 
         it("should override image src from env var", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            expect(convertAndParse(DOC_LOCAL_URL)("img#myId").attr("src")).toContain(PLANTUML_REMOTE_URL);
+            expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_REMOTE_URL);
         });
     });
 

@@ -34,16 +34,18 @@ alice -> bob
 
     describe("PlantUML server URL attribute", function () {
 
+        let registry;
+
+        beforeAll(() => registry = plantuml.register(asciidoctor.Extensions.create()));
+
         afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
         it("should not re-set attribute if not declared", function () {
-            let registry = plantuml.register(asciidoctor.Extensions.create());
             const doc = asciidoctor.load("== Header2", {extension_registry: registry});
             expect(doc.getAttribute("plantuml-server-url")).toBe(undefined);
         });
 
         it("should keep server url attribute when passed", function () {
-            let registry = plantuml.register(asciidoctor.Extensions.create());
             const doc = asciidoctor.load("== Header2", {
                 attributes: "plantuml-server-url=http://plantuml.org",
                 extension_registry: registry
@@ -53,7 +55,6 @@ alice -> bob
 
         it("should override server url from ENV var", function () {
             process.env.PLANTUML_SERVER_URL = "http://localhost:8080";
-            let registry = plantuml.register(asciidoctor.Extensions.create());
             const doc = asciidoctor.load("== Header2", {
                 attributes: "plantuml-server-url=http://plantuml.org",
                 extension_registry: registry

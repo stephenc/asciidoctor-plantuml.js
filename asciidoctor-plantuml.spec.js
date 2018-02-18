@@ -63,7 +63,7 @@ alice -> bob
             expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_LOCAL_URL);
         });
 
-        it("should override image src from env var", function () {
+        it("should override image src from env", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
             expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_REMOTE_URL);
         });

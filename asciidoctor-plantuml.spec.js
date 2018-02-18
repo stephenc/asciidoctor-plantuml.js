@@ -20,7 +20,8 @@ describe("Asciidoctor PlantUML", function () {
             expect(registeredForBlock).toThrowError(/nil/);
 
             plantuml.register(registry);
-            expect(registeredForBlock()).not.toBe(null);
+            expect(registeredForBlock()).not.
+            toBe(null);
         });
     });
 

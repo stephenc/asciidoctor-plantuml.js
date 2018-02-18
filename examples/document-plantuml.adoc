@@ -1,8 +1,4 @@
-= Test Diagram
-
-== Chapter 1
-
-[plantuml, format=png, id="myId1"]
+[plantuml]
 ----
 @startuml
 alice -> bob

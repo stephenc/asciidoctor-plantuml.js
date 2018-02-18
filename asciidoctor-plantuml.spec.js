@@ -2,6 +2,8 @@ describe("Asciidoctor PlantUML", function () {
 
     const PLANTUML_LOCAL_URL = "http://localhost:8080";
 
+    const PLANTUML_REMOTE_URL = "http://plantuml.org";
+
     const DOC_LOCAL_URL = `
 = plantuml
 :plantuml-server-url: ${PLANTUML_LOCAL_URL}
@@ -68,9 +70,9 @@ alice -> bob
         });
 
         it("should override image src from env var", function () {
-            process.env.PLANTUML_SERVER_URL = "http://planuml.org";
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
             const $ = convertAndParse(DOC_LOCAL_URL);
-            expect($("img#myId").attr("src")).toContain(process.env.PLANTUML_SERVER_URL);
+            expect($("img#myId").attr("src")).toContain(PLANTUML_REMOTE_URL);
         });
     });
 

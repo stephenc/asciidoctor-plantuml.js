@@ -33,19 +33,17 @@ alice -> bob
 
         let registry;
 
-        let registeredForBlock = function () {
-            return Opal.send(registry, "registered_for_block?", ["plantuml", "listing"]);
-        };
+        let registeredForBlock = () => Opal.send(registry, "registered_for_block?", ["plantuml", "listing"]);
 
         beforeAll(function () {
             registry = asciidoctor.Extensions.create();
         });
 
         it("should register plantuml block for listing ctx", function () {
-            expect(registeredForBlock).toThrowError(/nil/);
+            expect(registeredForBlock).toThrowError(/undefined method/);
 
             plantuml.register(registry);
-            expect(registeredForBlock()).not.toBe(null);
+            expect(registeredForBlock()).not.toBeNull();
         });
     });
 
@@ -57,22 +55,17 @@ alice -> bob
 
         const convertAndParse = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
 
-        beforeAll(function () {
-            registry = asciidoctor.Extensions.create();
-            plantuml.register(registry);
-        });
+        beforeAll(() => registry = plantuml.register(asciidoctor.Extensions.create()));
 
         afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
         it("should point image to document attr", function () {
-            const $ = convertAndParse(DOC_LOCAL_URL);
-            expect($("img#myId").attr("src")).toContain(PLANTUML_LOCAL_URL);
+            expect(convertAndParse(DOC_LOCAL_URL)("img#myId").attr("src")).toContain(PLANTUML_LOCAL_URL);
         });
 
         it("should override image src from env var", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            const $ = convertAndParse(DOC_LOCAL_URL);
-            expect($("img#myId").attr("src")).toContain(PLANTUML_REMOTE_URL);
+            expect(convertAndParse(DOC_LOCAL_URL)("img#myId").attr("src")).toContain(PLANTUML_REMOTE_URL);
         });
     });
 

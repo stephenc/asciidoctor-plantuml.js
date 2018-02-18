@@ -1,24 +1,10 @@
 describe("PlantUML for Asciidoctor", function () {
 
-    const PLANTUML_LOCAL_URL = "http://localhost:8080";
+    const LOCAL_URL = "http://localhost:8080";
 
     const PLANTUML_REMOTE_URL = "http://plantuml.org";
 
-    const DOC_LOCAL_URL = `
-= plantuml
-:plantuml-server-url: ${PLANTUML_LOCAL_URL}
-
-[plantuml]
-----
-@startuml
-alice -> bob
-@enduml
-----
-`;
-
-    const DOC_NO_URL = `    
-[plantuml]
-----
+    const PLANT_UML = `----
 @startuml
 alice -> bob
 @enduml
@@ -53,20 +39,42 @@ alice -> bob
 
         let registry;
 
-        const convertAndParse = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
+        const $$ = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
+
+        const ADOC = (url = LOCAL_URL) => {
+            return `
+${url ? `:plantuml-server-url: ${url}` : ""}            
+[plantuml]
+${PLANT_UML}
+`
+        };
 
         beforeAll(() => registry = plantuml.register(asciidoctor.Extensions.create()));
 
         afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
         it("should point image to document attr", function () {
-            expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_LOCAL_URL);
+            expect($$(ADOC(LOCAL_URL))("img.plantuml").attr("src")).toContain(LOCAL_URL);
         });
 
         it("should override image src from env", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            expect(convertAndParse(DOC_LOCAL_URL)("img.plantuml").attr("src")).toContain(PLANTUML_REMOTE_URL);
+            expect($$(ADOC(LOCAL_URL))("img.plantuml").attr("src")).toContain(PLANTUML_REMOTE_URL);
         });
+
+        it("should set image src from env", function () {
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+            expect($$(ADOC())("img.plantuml").attr("src")).toContain(PLANTUML_REMOTE_URL);
+        });
+
+        it("should support named id attribute", function () {
+            const doc = `
+[plantuml,id=myId]
+${PLANT_UML}`;
+
+            expect($$(doc)("img.plantuml#myId").length).toEqual(1);
+        });
+
     });
 
 });

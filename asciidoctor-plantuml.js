@@ -8,14 +8,18 @@ function createPlantumlBlock(parent, content, attrs) {
 }
 
 function plantumlImgContent(url, attrs) {
+
     let content = '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
-    // if (attrs.$fetch('id', undefined)) content += `id="${attrs.$fetch('id')}" `;
-    content += `class="plantuml" src="${url}" `;
-    content += '/>';
+    content += (Opal.hash_get(attrs, "id") ? `id="${Opal.hash_get(attrs, "id")}" ` : "");
+    content += `class="plantuml" src="${url}"/>`;
     content += '</div>';
     content += '</div>';
+
+    console.log(`
+${content}    
+`);
 
     return content;
 }

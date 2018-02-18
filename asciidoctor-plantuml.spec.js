@@ -42,9 +42,14 @@ alice -> bob
             plantuml.register(registry);
         });
 
-        it("should not set attribute if not declared", function () {
+        it("should not re-set attribute if not declared", function () {
             const doc = asciidoctor.load("== Header2");
             expect(doc.getAttribute("plantuml-server-url")).toBe(undefined);
+        });
+
+        it("should keep server url attribute when passed", function () {
+            const doc = asciidoctor.load("== Header2", {attributes: "plantuml-server-url=http://plantuml.org"});
+            expect(doc.getAttribute("plantuml-server-url")).toBe("http://plantuml.org");
         });
     });
 

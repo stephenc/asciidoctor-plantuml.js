@@ -1,9 +1,27 @@
-var assert = require('assert');
+describe("Asciidoctor PlantUML", function () {
 
-describe('Array', function() {
-    describe('#indexOf()', function() {
-        it('should return -1 when the value is not present', function() {
-            assert.equal([1,2,3].indexOf(4), -1);
+    const asciidoctor = require('asciidoctor.js')();
+
+    const plantuml = require("./asciidoctor-plantuml.js");
+
+    describe("register()", function () {
+
+        let registry;
+
+        let registeredForBlock = function () {
+            return Opal.send(registry, "registered_for_block?", ["plantuml", "listing"]);
+        };
+
+        beforeAll(function () {
+            registry = asciidoctor.Extensions.create();
+        });
+
+        it("should register plantuml extension for listing", function () {
+            expect(registeredForBlock).toThrowError(/nil/);
+
+            plantuml.register(registry);
+            expect(registeredForBlock()).not.toBe(null);
         });
     });
+
 });

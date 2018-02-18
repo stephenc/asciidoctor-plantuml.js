@@ -1,4 +1,4 @@
-var plantumlEncoder = require('plantuml-encoder')
+const plantumlEncoder = require('plantuml-encoder');
 
 const PLANTUML_URL = process.env.PLANTUML_URL; 
 
@@ -12,8 +12,8 @@ function createPlantumlBlock(parent, content, attrs) {
 }
 
 function plantumlImgContent(url, attrs = Opal.hash({})) {
-    
-    var content = "<!-- plantuml begin -->\n";
+
+    let content = "<!-- plantuml begin -->\n";
     content += '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
@@ -28,7 +28,8 @@ function plantumlImgContent(url, attrs = Opal.hash({})) {
 }
 
 function genUrl(text, format = "png") {
-    var encoded = plantumlEncoder.encode(text)
+    // parent.getDocument().getAttribute('plantuml-server-url');
+    const encoded = plantumlEncoder.encode(text);
     return `${PLANTUML_URL}/${format}/${encoded}`;
 }
 
@@ -45,5 +46,5 @@ function plantumlBlock() {
 
 module.exports.register = function register (registry) {
   registry.block("plantuml", plantumlBlock);
-}
+};
 

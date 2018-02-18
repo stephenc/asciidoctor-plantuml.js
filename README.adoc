@@ -1,5 +1,8 @@
 = Asciidoctor Plantuml Extension
 
+*Master Branch* image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"
+]
+
 Port of https://raw.githubusercontent.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.JS].
 
 Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].

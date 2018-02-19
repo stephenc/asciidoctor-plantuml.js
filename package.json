@@ -5,6 +5,7 @@
   "main": "asciidoctor-plantuml.js",
   "dependencies": {
     "asciidoctor.js": "^1.5.6-preview.5",
+    "got": "^8.2.0",
     "plantuml-encoder": "^1.2.5"
   },
   "devDependencies": {

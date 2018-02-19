@@ -78,7 +78,13 @@ ${DIAGRAM}
     });
 
     it("should support named id attribute", function () {
-        const src = $$(ADOC(undefined, ["id=myId"]))("img.plantuml").attr("src");
+        const src = $$(ADOC(undefined, ["id=myId"]))("img#myId.plantuml").attr("src");
+        expect(src).toContain(LOCAL_URL);
+        expect(src).toContain(encodedDiagram);
+    });
+
+    it("should support named id attribute", function () {
+        const src = $$(ADOC(undefined, ["myId"]))("img#myId.plantuml").attr("src");
         expect(src).toContain(LOCAL_URL);
         expect(src).toContain(encodedDiagram);
     });

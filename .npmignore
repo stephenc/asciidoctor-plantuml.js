@@ -1,4 +1,6 @@
-*.adoc
-*.css
-
 node_modules
+.idea
+*.png
+*.adoc
+*.html
+.asciidoctor

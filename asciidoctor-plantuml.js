@@ -16,11 +16,11 @@ function plantumlImgContent(url, attrs) {
     content += `class="plantuml" src="${url}"/>`;
     content += '</div>';
     content += '</div>';
-
+/*
     console.log(`
 ${content}    
 `);
-
+*/
     return content;
 }
 

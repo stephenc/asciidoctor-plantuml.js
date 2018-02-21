@@ -1,4 +1,6 @@
 const plantumlEncoder = require('plantuml-encoder');
+const got = require('got');
+const fs = require('fs');
 
 function createPlantumlBlock(parent, content, attrs) {
 
@@ -24,6 +26,14 @@ function createImageTag(parent, text, attrs) {
     let src = undefined;
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
         src = "fetchme";
+
+        const diagramUrl = `${plantumlServerURL}/png/${encoded}`;
+
+        got.stream(diagramUrl)
+            .on('error', (error, body, response) => {
+                console.log(`${error} ${response}`)
+            }).pipe(fs.createWriteStream('1.png'))
+
     } else {
         src = `${plantumlServerURL}/png/${encoded}`;
     }

@@ -10,22 +10,25 @@ Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Ext
 
 == Overview
 
-The extension tries to mimic behaviour of `[plantuml]` block from Asciidoctor Diagram[https://asciidoctor.org/docs/asciidoctor-diagram/].
+The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram].
 
-But unlike original code, this extension uses PlantUML Server[https://github.com/plantuml/plantuml-server] for displaying images.
+Unlike original code, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
+
 Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
 During page rendering diagram is generated on PlantUML Server and displayed by browser.
 
 == Asciidoctor.js integration
 
+Sample code
+
 [source,javascript]
-----
-const plantuml = require("./asciidoctor-plantuml.js");
+....
 const asciidoctor = require('asciidoctor.js')();
+const plantuml = require("asciidoctor-plantuml"); <1>
 
 const ADOC = `
 == PlantUML
-:plantuml-server-url: http://plantuml.org/plantuml
+:plantuml-server-url: http://plantuml.org/plantuml <2>
 [plantuml]
 ----
 alice -> bob
@@ -35,9 +38,11 @@ bob ..> alice
 
 plantuml.register(asciidoctor.Extensions);
 console.log(asciidoctor.convert(ADOC));
-----
+....
+<1> `npm install asciidoctor-plantuml` must be called before importing.
+<2> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.
 
-will produce HTML output
+HTML output
 
 [source,html]
 ----

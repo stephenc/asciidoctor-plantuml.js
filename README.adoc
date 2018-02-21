@@ -13,13 +13,13 @@ Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Ext
 The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram].
 
 Unlike original code, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
-
 Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
+
 During page rendering diagram is generated on PlantUML Server and displayed by browser.
 
 == Asciidoctor.js integration
 
-Sample code using global extension registry.
+Sample code
 
 [source,javascript]
 ....
@@ -37,12 +37,19 @@ bob ..> alice
 `;
 
 plantuml.register(asciidoctor.Extensions);
-console.log(asciidoctor.convert(ADOC));
+console.log(asciidoctor.convert(ADOC)); <3>
+
+const registry = asciidoctor.Extensions.create();
+plantuml.register(registry);
+console.log(asciidoctor.convert(ADOC, {'extension_registry': registry})); <4>
+
 ....
 <1> `npm install asciidoctor-plantuml` must be called before importing.
 <2> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.
+<3> using global extension registry
+<4> with custom registry
 
-HTML output
+Regardless of global or custom registry usage, produced HTML output will look like
 
 [source,html]
 ----

@@ -1,5 +1,7 @@
 = Asciidoctor Plantuml Extension
 
+:antora-link: https://antora.org[Antora]
+
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
 == Development status
@@ -63,6 +65,57 @@ Regardless of global or custom registry usage, produced HTML output will look li
 
 == Antora integration
 
-TBD
+Integration is just the matter of enabling the extension in https://docs.antora.org/antora/1.0/playbook/playbook/[site playbook]
+and providing address of PlantUML server.
 
-// Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].
+There's sample https://github.com/eshepelyuk/asciidoctor-plantuml-antora[Antora component] demonstrating usage of this extension.
+Below are the steps to build and run sample Antora site with PlantUML diagrams support.
+
+. Create directory for Antora playbook
+
+  $ mkdir plantuml-antora
+  $ cd plantuml-antora
+
+. Install required modules
+
+  $ npm i -g @antora/cli
+  $ npm i -g @antora/site-generator-default
+  $ npm i asciidoctor-plantuml
+  $ npm i -g serve
+
+. Create Antora playbook
++
+.site.yml
+[source,yaml]
+----
+site:
+  title: Antora Demo Site
+  start_page: asciidoctor-plantuml-antora::index.adoc
+content:
+  sources:
+  - url: https://github.com/eshepelyuk/asciidoctor-plantuml-antora.git
+    branches: master
+ui:
+  bundle: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+asciidoc:
+  extensions:
+    - asciidoctor-plantuml <1>
+  attributes:
+    plantuml-server-url: 'http://www.plantuml.com/plantuml' <2>
+output:
+  dir: build
+----
+<1> enable Asciidoctor PlantUML extension
+<2> use public PlantUML Server
+
+. Generate site
+
+  $ antora generate site.yml
+
+. Start web server
+
+  $ serve build
+
+. Check results
+
+Open http://localhost:5000 in browser.

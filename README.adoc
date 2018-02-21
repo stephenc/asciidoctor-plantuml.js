@@ -7,4 +7,36 @@ endif::[]
 
 Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
-Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].
+
+== Overview
+
+The extension tries to mimic behaviour of `[plantuml]` block from Asciidoctor Diagram[https://asciidoctor.org/docs/asciidoctor-diagram/].
+
+But unlike original code, this extension uses PlantUML Server[https://github.com/plantuml/plantuml-server] for displaying images.
+Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
+During page rendering diagram is generated on PlantUML Server and displayed by browser.
+
+== Asciidoctor.js integration
+
+[source,javascript]
+----
+const plantuml = require("./asciidoctor-plantuml.js");
+const asciidoctor = require('asciidoctor.js')();
+
+
+const ADOC = `
+:plantuml-server-url: http://plantuml.org/plantuml
+[plantuml]
+----
+alice -> bob
+bob ..> alice
+----
+`;
+
+
+const registry = plantuml.register(asciidoctor.Extensions.create());
+console.log(asciidoctor.convert(ADOC, {extension_registry: registry}));
+----
+
+// == Antora integration
+// Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].

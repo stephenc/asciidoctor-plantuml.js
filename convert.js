@@ -1,9 +1,8 @@
 const plantuml = require("./asciidoctor-plantuml.js");
 const asciidoctor = require('asciidoctor.js')();
 
-
 const ADOC = `
-== PlantUML example
+== PlantUML
 :plantuml-server-url: http://plantuml.org/plantuml
 [plantuml]
 ----
@@ -12,7 +11,8 @@ bob ..> alice
 ----
 `;
 
+const registry = asciidoctor.Extensions.create();
+plantuml.register(registry);
 
-const registry = plantuml.register(asciidoctor.Extensions.create());
-console.log(asciidoctor.convert(ADOC, {extension_registry: registry}));
+console.log(asciidoctor.convert(ADOC, {'extension_registry': registry}));
 

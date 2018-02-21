@@ -5,6 +5,6 @@ image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master
 ]
 endif::[]
 
-Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.JS].
+Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
 Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].

@@ -17,17 +17,20 @@ ${createImageTag(parent, text, attrs)}
 }
 
 function createImageTag(parent, text, attrs) {
-    const url = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
+    const plantumlServerURL = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
 
     const encoded = plantumlEncoder.encode(text);
 
-    let content = '<img ';
+    let src = undefined;
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
-        content += " data-fetch=true ";
+        src = "fetchme";
+    } else {
+        src = `${plantumlServerURL}/png/${encoded}`;
     }
-    content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
-    content += `class="plantuml" src="${url}/png/${encoded}"/>`;
 
+    let content = '<img ';
+    content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
+    content += `class="plantuml" src="${src}"/>`;
     return content;
 }
 

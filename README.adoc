@@ -23,8 +23,8 @@ During page rendering diagram is generated on PlantUML Server and displayed by b
 const plantuml = require("./asciidoctor-plantuml.js");
 const asciidoctor = require('asciidoctor.js')();
 
-
 const ADOC = `
+== PlantUML
 :plantuml-server-url: http://plantuml.org/plantuml
 [plantuml]
 ----
@@ -33,10 +33,24 @@ bob ..> alice
 ----
 `;
 
-
-const registry = plantuml.register(asciidoctor.Extensions.create());
-console.log(asciidoctor.convert(ADOC, {extension_registry: registry}));
+plantuml.register(asciidoctor.Extensions);
+console.log(asciidoctor.convert(ADOC));
 ----
 
-// == Antora integration
+will produce HTML output
+
+[source,html]
+----
+<div class="sect1">
+<h2 id="_plantuml">PlantUML</h2>
+<div class="sectionbody">
+<div class="imageblock"><div class="content"><img class="plantuml" src="http://plantuml.org/plantuml/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
+</div>
+</div>
+----
+
+== Antora integration
+
+TBD
+
 // Main intention to provide http://plantuml.com/[PlantUML] support for https://antora.org[Antora].

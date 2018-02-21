@@ -43,7 +43,13 @@ function plantumlBlock() {
 }
 
 module.exports.register = function register(registry) {
-    registry.block("plantuml", plantumlBlock);
+    if (typeof registry.register === "function") {
+        registry.register(function() {
+            this.block(plantumlBlock);
+        });
+    } else if (typeof registry.block === "function") {
+        registry.block("plantuml", plantumlBlock);
+    }
     return registry;
 };
 

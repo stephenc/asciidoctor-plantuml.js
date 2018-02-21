@@ -12,7 +12,7 @@ function plantumlImgContent(url, attrs) {
     let content = '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
-    content += (Opal.hash_get(attrs, "id") ? `id="${Opal.hash_get(attrs, "id")}" ` : "");
+    content += (Opal.hash_get(attrs, "id") ? `pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
     content += `class="plantuml" src="${url}"/>`;
     content += '</div>';
     content += '</div>';

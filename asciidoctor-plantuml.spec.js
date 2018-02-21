@@ -11,7 +11,7 @@ const asciidoctor = require('asciidoctor.js')();
 
 const plantuml = require("./asciidoctor-plantuml.js");
 
-describe("registration", function () {
+describe("extension registration", function () {
 
     let registry;
 
@@ -29,7 +29,7 @@ describe("registration", function () {
     });
 });
 
-describe("conversion", function () {
+describe("conversion to HTML", function () {
 
     const cheerio = require('cheerio');
 
@@ -57,36 +57,38 @@ ${DIAGRAM}
 
     afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
-    it("should point image to document attr", function () {
-        const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
-        expect(src).toContain(LOCAL_URL);
-        expect(src).toContain(encodedDiagram);
+    describe("image tag src", function () {
+        it("should point image to document attr", function () {
+            const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
+            expect(src).toContain(LOCAL_URL);
+            expect(src).toContain(encodedDiagram);
+        });
+
+        it("should override image src from env", function () {
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+            const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
+            expect(src).toContain(PLANTUML_REMOTE_URL);
+            expect(src).toContain(encodedDiagram);
+        });
+
+        it("should set image src from env", function () {
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+            const src = $$(ADOC())("img.plantuml").attr("src");
+            expect(src).toContain(PLANTUML_REMOTE_URL);
+            expect(src).toContain(encodedDiagram);
+        });
     });
 
-    it("should override image src from env", function () {
-        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-        const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
-        expect(src).toContain(PLANTUML_REMOTE_URL);
-        expect(src).toContain(encodedDiagram);
-    });
+    describe("image tag attributes", function () {
+        it("pumlid should be populated from named attr", function () {
+            const img = $$(ADOC(undefined, ["id=myId"]))("img.plantuml");
+            expect(img.attr("pumlid")).toBe("myId");
+        });
 
-    it("should set image src from env", function () {
-        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-        const src = $$(ADOC())("img.plantuml").attr("src");
-        expect(src).toContain(PLANTUML_REMOTE_URL);
-        expect(src).toContain(encodedDiagram);
-    });
-
-    it("should support named id attribute", function () {
-        const src = $$(ADOC(undefined, ["id=myId"]))("img#myId.plantuml").attr("src");
-        expect(src).toContain(LOCAL_URL);
-        expect(src).toContain(encodedDiagram);
-    });
-
-    it("should support named id attribute", function () {
-        const src = $$(ADOC(undefined, ["myId"]))("img#myId.plantuml").attr("src");
-        expect(src).toContain(LOCAL_URL);
-        expect(src).toContain(encodedDiagram);
+        it("pumlid should be populated from positional attr", function () {
+            const img = $$(ADOC(undefined, ["myId"]))("img.plantuml");
+            expect(img.attr("pumlid")).toBe("myId");
+        });
     });
 
 });

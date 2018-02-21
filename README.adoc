@@ -19,7 +19,7 @@ During page rendering diagram is generated on PlantUML Server and displayed by b
 
 == Asciidoctor.js integration
 
-Sample code
+Sample code using global extension registry.
 
 [source,javascript]
 ....

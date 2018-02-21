@@ -7,20 +7,20 @@ function createPlantumlBlock(parent, content, attrs) {
     return Opal.Asciidoctor.Block.$new(parent, 'pass', opts);
 }
 
-function plantumlImgContent(url, attrs) {
+function plantumlImgContent(parent, url, attrs) {
 
     let content = '<div class="imageblock">';
     content += '<div class="content">';
     content += '<img ';
+
+    if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
+        content += " fetch=true ";
+    }
     content += (Opal.hash_get(attrs, "id") ? `pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
     content += `class="plantuml" src="${url}"/>`;
     content += '</div>';
     content += '</div>';
-/*
-    console.log(`
-${content}    
-`);
-*/
+
     return content;
 }
 
@@ -38,7 +38,7 @@ function plantumlBlock() {
     this.process(function (parent, reader, attrs) {
         const lines = reader.getLines().join("\n");
         const url = genUrl(parent, lines);
-        return createPlantumlBlock(parent, plantumlImgContent(url, attrs), attrs);
+        return createPlantumlBlock(parent, plantumlImgContent(parent, url, attrs), attrs);
     });
 }
 

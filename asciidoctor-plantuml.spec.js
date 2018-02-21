@@ -37,11 +37,21 @@ describe("conversion to HTML", () => {
 
     const $$ = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
 
-    const ADOC = (url = LOCAL_URL, attrs = ["plantuml"]) => {
-        let block = ["plantuml"].concat(attrs);
+    const ADOC = (url = LOCAL_URL, blockAttrs = ["plantuml"]) => {
+        let blockDefinition = ["plantuml"].concat(blockAttrs).join(",");
         return `
 ${url ? `:plantuml-server-url: ${url}` : ""}            
-[${block.join(",")}]
+[${blockDefinition}]
+----
+${DIAGRAM}
+----
+`
+    };
+
+    const ADOC2 = (docAttrs, blockAttrs) => {
+        return `            
+${docAttrs.join("\n")}        
+[${(blockAttrs ? ["plantuml"].concat(blockAttrs) : ["plantuml"]).join(",")}]
 ----
 ${DIAGRAM}
 ----
@@ -81,6 +91,13 @@ ${DIAGRAM}
             const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
             expect(src).toContain(PLANTUML_REMOTE_URL);
             expect(src).toContain(encodedDiagram);
+        });
+    });
+
+    describe("image fetching", () => {
+        it("should fetch when attribute set", () => {
+            const html = $$(ADOC2([":plantuml-fetch-diagram:"]));
+            expect(html("img.plantuml").attr("fetch")).toBe("true");
         });
     });
 

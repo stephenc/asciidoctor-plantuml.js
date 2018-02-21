@@ -1,5 +1,6 @@
 = Asciidoctor Plantuml Extension
 :toc:
+
 Port of https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
 == Development status

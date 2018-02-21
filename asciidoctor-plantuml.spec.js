@@ -97,7 +97,7 @@ ${DIAGRAM}
     describe("image fetching", () => {
         it("should fetch when attribute set", () => {
             const html = $$(ADOC2([":plantuml-fetch-diagram:"]));
-            expect(html("img.plantuml").attr("fetch")).toBe("true");
+            expect(html("img.plantuml").data("fetch")).toBe(true);
         });
     });
 

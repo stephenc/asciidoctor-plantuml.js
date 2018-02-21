@@ -7,27 +7,28 @@ function createPlantumlBlock(parent, content, attrs) {
     return Opal.Asciidoctor.Block.$new(parent, 'pass', opts);
 }
 
-function plantumlImgContent(parent, url, attrs) {
-
-    let content = '<div class="imageblock">';
-    content += '<div class="content">';
-    content += '<img ';
-
-    if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
-        content += " fetch=true ";
-    }
-    content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
-    content += `class="plantuml" src="${url}"/>`;
-    content += '</div>';
-    content += '</div>';
-
-    return content;
+function plantumlImgContent(parent, text, attrs) {
+    return `
+<div class="imageblock">
+<div class="content">
+${createImageTag(parent, text, attrs)}
+</div>
+</div>`;
 }
 
-function genUrl(parent, text) {
+function createImageTag(parent, text, attrs) {
     const url = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
+
     const encoded = plantumlEncoder.encode(text);
-    return `${url}/png/${encoded}`;
+
+    let content = '<img ';
+    if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
+        content += " data-fetch=true ";
+    }
+    content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
+    content += `class="plantuml" src="${url}/png/${encoded}"/>`;
+
+    return content;
 }
 
 function plantumlBlock() {
@@ -36,15 +37,15 @@ function plantumlBlock() {
     this.positionalAttributes('id');
 
     this.process(function (parent, reader, attrs) {
-        const lines = reader.getLines().join("\n");
-        const url = genUrl(parent, lines);
-        return createPlantumlBlock(parent, plantumlImgContent(parent, url, attrs), attrs);
+        return createPlantumlBlock(parent,
+            plantumlImgContent(parent, reader.getLines().join("\n"), attrs), attrs
+        );
     });
 }
 
 module.exports.register = function register(registry) {
     if (typeof registry.register === "function") {
-        registry.register(function() {
+        registry.register(function () {
             this.block(plantumlBlock);
         });
     } else if (typeof registry.block === "function") {

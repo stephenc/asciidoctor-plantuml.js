@@ -1,5 +1,5 @@
 = Asciidoctor Plantuml Extension
-
+:toc:
 ifdef::env-github[]
 image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Travis Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"
 ]

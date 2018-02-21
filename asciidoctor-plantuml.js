@@ -33,7 +33,7 @@ function genUrl(parent, text) {
 function plantumlBlock() {
     this.named('plantuml');
     this.onContext('listing');
-    this.positionalAttributes('id', 'format');
+    this.positionalAttributes('id');
 
     this.process(function (parent, reader, attrs) {
         const lines = reader.getLines().join("\n");

@@ -104,12 +104,12 @@ ${DIAGRAM}
     describe("image tag attributes", () => {
         it("pumlid from named attr", () => {
             const img = $$(ADOC(undefined, ["id=myId"]))("img.plantuml");
-            expect(img.attr("pumlid")).toBe("myId");
+            expect(img.data("pumlid")).toBe("myId");
         });
 
         it("pumlid from positional attr", () => {
             const img = $$(ADOC(undefined, ["myId"]))("img.plantuml");
-            expect(img.attr("pumlid")).toBe("myId");
+            expect(img.data("pumlid")).toBe("myId");
         });
     });
 

@@ -16,7 +16,7 @@ function plantumlImgContent(parent, url, attrs) {
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
         content += " fetch=true ";
     }
-    content += (Opal.hash_get(attrs, "id") ? `pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
+    content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
     content += `class="plantuml" src="${url}"/>`;
     content += '</div>';
     content += '</div>';

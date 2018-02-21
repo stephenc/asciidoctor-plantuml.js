@@ -2,8 +2,6 @@
 
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
-:toc:
-
 == Development status
 ifdef::env-github[]
 image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Travis Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"

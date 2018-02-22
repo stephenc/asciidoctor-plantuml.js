@@ -23,12 +23,11 @@ function createImageTag(parent, text, attrs) {
 
     const encoded = plantumlEncoder.encode(text);
 
-    let src = undefined;
-    if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
-        src = "fetchme";
+    let diagramUrl = `${plantumlServerURL}/png/${encoded}`;
 
-        // const diagramUrl = `${plantumlServerURL}/png/${encoded}`;
-        //
+    if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
+        diagramUrl = "fetchme";
+
         // new Promise((resolve, reject) => {
         //     got.stream(diagramUrl)
         //         .on('error', (error, body, response) => console.log(`${error} ${response}`))
@@ -36,13 +35,11 @@ function createImageTag(parent, text, attrs) {
         //         .on("finish", () => console.log("finished"));
         // })
 
-    } else {
-        src = `${plantumlServerURL}/png/${encoded}`;
     }
 
     let content = '<img ';
     content += (Opal.hash_get(attrs, "id") ? `data-pumlid="${Opal.hash_get(attrs, "id")}" ` : "");
-    content += `class="plantuml" src="${src}"/>`;
+    content += `class="plantuml" src="${diagramUrl}"/>`;
     return content;
 }
 

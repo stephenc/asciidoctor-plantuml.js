@@ -1,5 +1,6 @@
 = Asciidoctor Plantuml Extension
 :antora-link: https://antora.org[Antora]
+:plantuml-url: http://www.plantuml.com/plantuml
 :toc:
 
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
@@ -29,7 +30,7 @@ https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web
 
 It can be used in to modes
 
-* Public instance, for example this one http://plantuml.org/plantuml.
+* Public instance, for example this one {plantuml-url}.
 * For performance reason it's recommended to use private one.
 +
 One could easily deploy it as Docker container as described https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[PlantUML server  readme].
@@ -41,13 +42,14 @@ One could easily deploy it as Docker container as described https://github.com/p
 Sample code
 
 [source,javascript]
+[subs="verbatim,attributes"]
 ....
 const asciidoctor = require('asciidoctor.js')();
 const plantuml = require("asciidoctor-plantuml");
 
 const ADOC = `
 == PlantUML
-:plantuml-server-url: http://plantuml.org/plantuml <1>
+:plantuml-server-url: {plantuml-url} <1>
 [plantuml]
 ----
 alice -> bob
@@ -70,11 +72,12 @@ console.log(asciidoctor.convert(ADOC, {'extension_registry': registry})); <3>
 Regardless of global or custom registry usage, produced HTML output will look like
 
 [source,html]
+[subs="verbatim,attributes"]
 ----
 <div class="sect1">
 <h2 id="_plantuml">PlantUML</h2>
 <div class="sectionbody">
-<div class="imageblock"><div class="content"><img class="plantuml" src="http://plantuml.org/plantuml/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
+<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-url}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
 </div>
 </div>
 ----
@@ -102,6 +105,7 @@ Below are the steps to build and run sample Antora site with PlantUML diagrams s
 +
 .site.yml
 [source,yaml]
+[subs="verbatim,attributes"]
 ----
 site:
   title: Antora Demo Site
@@ -116,7 +120,7 @@ asciidoc:
   extensions:
     - asciidoctor-plantuml <1>
   attributes:
-    plantuml-server-url: 'http://www.plantuml.com/plantuml' <2>
+    plantuml-server-url: '{plantuml-url}' <2>
 output:
   dir: build
 ----

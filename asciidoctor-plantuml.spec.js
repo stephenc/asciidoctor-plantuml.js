@@ -1,6 +1,6 @@
 const LOCAL_URL = "http://localhost:8080";
 
-const PLANTUML_REMOTE_URL = "http://plantuml.org";
+const PLANTUML_REMOTE_URL = "http://www.plantuml.com/plantuml";
 
 const DIAGRAM = `@startuml
 alice -> bob

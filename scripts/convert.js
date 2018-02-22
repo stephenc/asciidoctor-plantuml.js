@@ -1,9 +1,9 @@
 const asciidoctor = require('asciidoctor.js')();
-const plantuml = require("./asciidoctor-plantuml.js");
+const plantuml = require("../asciidoctor-plantuml.js");
 
 const ADOC = `
 == PlantUML
-:plantuml-server-url: http://plantuml.org/plantuml
+:plantuml-server-url: http://www.plantuml.com/plantuml
 [plantuml]
 ----
 alice -> bob

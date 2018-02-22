@@ -28,59 +28,14 @@ During page rendering diagram is generated on PlantUML Server and displayed in b
 
 https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web application exposing HTTP API that allows generating diagram images on the fly.
 
-It can be used in to modes
+It can be used in two modes
 
 * Public instance, for example this one {plantuml-server-public}.
 * For performance reason it's recommended to use private one.
 +
-One could easily deploy it as Docker container as described https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[PlantUML server  readme].
+One could easily deploy it as Docker container as described in https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[README].
 
   $ docker run -d -p 8080:8080 plantuml/plantuml-server:jetty
-
-== Asciidoctor.js integration
-
-Sample code
-
-[source,javascript]
-[subs="verbatim,attributes"]
-....
-const asciidoctor = require('asciidoctor.js')();
-const plantuml = require("asciidoctor-plantuml");
-
-const ADOC = `
-== PlantUML
-:plantuml-server-public: {plantuml-server-public} <1>
-[plantuml]
-----
-alice -> bob
-bob ..> alice
-----
-`;
-
-plantuml.register(asciidoctor.Extensions);
-console.log(asciidoctor.convert(ADOC)); <2>
-
-const registry = asciidoctor.Extensions.create();
-plantuml.register(registry);
-console.log(asciidoctor.convert(ADOC, {'extension_registry': registry})); <3>
-
-....
-<1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.
-<2> usage with global extension registry
-<3> usage with custom registry
-
-Regardless of global or custom registry usage, produced HTML output will look like
-
-[source,html]
-[subs="verbatim,attributes"]
-----
-<div class="sect1">
-<h2 id="_plantuml">PlantUML</h2>
-<div class="sectionbody">
-<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-server-public}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
-</div>
-</div>
-----
 
 == Antora integration
 
@@ -138,3 +93,48 @@ output:
 . Check results
 
 Open http://localhost:5000 in browser.
+
+== Asciidoctor.js integration
+
+Sample code
+
+[source,javascript]
+[subs="verbatim,attributes"]
+....
+const asciidoctor = require('asciidoctor.js')();
+const plantuml = require("asciidoctor-plantuml");
+
+const ADOC = `
+== PlantUML
+:plantuml-server-public: {plantuml-server-public} <1>
+[plantuml]
+----
+alice -> bob
+bob ..> alice
+----
+`;
+
+plantuml.register(asciidoctor.Extensions);
+console.log(asciidoctor.convert(ADOC)); <2>
+
+const registry = asciidoctor.Extensions.create();
+plantuml.register(registry);
+console.log(asciidoctor.convert(ADOC, {'extension_registry': registry})); <3>
+
+....
+<1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.
+<2> usage with global extension registry
+<3> usage with custom registry
+
+Regardless of global or custom registry usage, produced HTML output will look like
+
+[source,html]
+[subs="verbatim,attributes"]
+----
+<div class="sect1">
+<h2 id="_plantuml">PlantUML</h2>
+<div class="sectionbody">
+<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-server-public}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
+</div>
+</div>
+----

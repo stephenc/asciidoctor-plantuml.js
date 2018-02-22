@@ -42,8 +42,8 @@ One could easily deploy it as Docker container as described in https://github.co
 Integration is just the matter of enabling the extension in https://docs.antora.org/antora/1.0/playbook/playbook/[site playbook]
 and providing address of PlantUML server.
 
-There's sample https://github.com/eshepelyuk/asciidoctor-plantuml-antora[Antora component] demonstrating usage of this extension.
-Below are the steps to build and run sample Antora site with PlantUML diagrams support.
+I've created sample https://github.com/eshepelyuk/asciidoctor-plantuml-antora[Antora component] demonstrating usage of this extension.
+Below are the steps to build and run sample site with PlantUML support.
 
 . Create directory for Antora playbook
 

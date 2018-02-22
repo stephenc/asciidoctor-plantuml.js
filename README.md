@@ -1,0 +1,1 @@
+Please visit [project home page](https://github.com/eshepelyuk/asciidoctor-plantuml.js) for the complete README.

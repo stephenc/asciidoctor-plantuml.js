@@ -4,3 +4,5 @@ node_modules
 *.adoc
 *.html
 .asciidoctor
+*.spec.js
+scripts

@@ -1,6 +1,6 @@
 = Asciidoctor Plantuml Extension
-
 :antora-link: https://antora.org[Antora]
+:toc:
 
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
@@ -18,6 +18,11 @@ Unlike original code, it uses https://github.com/plantuml/plantuml-server[PlantU
 Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
 
 During page rendering diagram is generated on PlantUML Server and displayed by browser.
+
+//== PlantUML server
+//
+//* public
+//* private one run with docker
 
 == Asciidoctor.js integration
 

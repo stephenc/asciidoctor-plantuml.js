@@ -4,6 +4,7 @@ const plantuml = require("../asciidoctor-plantuml.js");
 const ADOC = `
 == PlantUML
 :plantuml-server-url: http://www.plantuml.com/plantuml
+:plantuml-fetch-diagram:
 [plantuml]
 ----
 alice -> bob

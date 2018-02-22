@@ -26,15 +26,12 @@ function createImageTag(parent, text, attrs) {
     let diagramUrl = `${plantumlServerURL}/png/${encoded}`;
 
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
+        // got.stream(diagramUrl)
+        //     .on('error', (error, body, response) => console.log(`${error} ${response}`))
+        //     .pipe(fs.createWriteStream('1.png'))
+        //     .on("finish", () => console.log("finished"));
+
         diagramUrl = "fetchme";
-
-        // new Promise((resolve, reject) => {
-        //     got.stream(diagramUrl)
-        //         .on('error', (error, body, response) => console.log(`${error} ${response}`))
-        //         .pipe(fs.createWriteStream('1.png'))
-        //         .on("finish", () => console.log("finished"));
-        // })
-
     }
 
     let content = '<img ';

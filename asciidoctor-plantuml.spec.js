@@ -75,22 +75,19 @@ ${DIAGRAM}
     describe("image tag src", () => {
         it("should point image to document attr", function () {
             const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
-            expect(src).toContain(LOCAL_URL);
-            expect(src).toContain(encodedDiagram);
+            expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
         });
 
         it("should set image src from env var", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
             const src = $$(ADOC())("img.plantuml").attr("src");
-            expect(src).toContain(PLANTUML_REMOTE_URL);
-            expect(src).toContain(encodedDiagram);
+            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
         });
 
         it("should override image src from env var", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
             const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
-            expect(src).toContain(PLANTUML_REMOTE_URL);
-            expect(src).toContain(encodedDiagram);
+            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
         });
     });
 

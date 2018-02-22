@@ -1,6 +1,6 @@
 = Asciidoctor Plantuml Extension
+:plantuml-server-public: http://www.plantuml.com/plantuml
 :antora-link: https://antora.org[Antora]
-:plantuml-url: http://www.plantuml.com/plantuml
 :toc:
 
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
@@ -30,7 +30,7 @@ https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web
 
 It can be used in to modes
 
-* Public instance, for example this one {plantuml-url}.
+* Public instance, for example this one {plantuml-server-public}.
 * For performance reason it's recommended to use private one.
 +
 One could easily deploy it as Docker container as described https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[PlantUML server  readme].
@@ -49,7 +49,7 @@ const plantuml = require("asciidoctor-plantuml");
 
 const ADOC = `
 == PlantUML
-:plantuml-server-url: {plantuml-url} <1>
+:plantuml-server-public: {plantuml-server-public} <1>
 [plantuml]
 ----
 alice -> bob
@@ -77,7 +77,7 @@ Regardless of global or custom registry usage, produced HTML output will look li
 <div class="sect1">
 <h2 id="_plantuml">PlantUML</h2>
 <div class="sectionbody">
-<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-url}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
+<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-server-public}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
 </div>
 </div>
 ----
@@ -120,7 +120,7 @@ asciidoc:
   extensions:
     - asciidoctor-plantuml <1>
   attributes:
-    plantuml-server-url: '{plantuml-url}' <2>
+    plantuml-server-public: '{plantuml-server-public}' <2>
 output:
   dir: build
 ----

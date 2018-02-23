@@ -7,13 +7,16 @@ alice -> bob
 @enduml
 `;
 
+const plantuml = require("./asciidoctor-plantuml.js");
+
 const asciidoctor = require('asciidoctor.js')();
 
 const fs = require('fs');
 
 const tmp = require('tmp');
+tmp.setGracefulCleanup();
 
-const plantuml = require("./asciidoctor-plantuml.js");
+const path = require('path');
 
 describe("extension registration", function () {
 
@@ -37,22 +40,9 @@ describe("conversion to HTML", () => {
 
     const plantumlEncoder = require('plantuml-encoder');
 
-    let registry, encodedDiagram;
-
     const $$ = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}));
 
-    const ADOC = (url = LOCAL_URL, blockAttrs = ["plantuml"]) => {
-        let blockDefinition = ["plantuml"].concat(blockAttrs).join(",");
-        return `
-${url ? `:plantuml-server-url: ${url}` : ""}            
-[${blockDefinition}]
-----
-${DIAGRAM}
-----
-`
-    };
-
-    const ADOC2 = (docAttrs, blockAttrs) => {
+    const ADOC = (docAttrs = [], blockAttrs = []) => {
         return `            
 ${docAttrs.join("\n")}        
 [${(blockAttrs ? ["plantuml"].concat(blockAttrs) : ["plantuml"]).join(",")}]
@@ -61,6 +51,8 @@ ${DIAGRAM}
 ----
 `
     };
+
+    let registry, encodedDiagram;
 
     beforeAll(() => {
         registry = plantuml.register(asciidoctor.Extensions.create());
@@ -71,14 +63,14 @@ ${DIAGRAM}
 
     describe("general html structure", () => {
         it("should create div.imageblock with img inside", () => {
-            const root = $$(ADOC(LOCAL_URL))("div.imageblock");
+            const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("div.imageblock");
             expect(root.find("div.content img.plantuml").length).toBe(1);
         });
     });
 
     describe("image tag src", () => {
         it("should point image to document attr", function () {
-            const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
+            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
             expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
         });
 
@@ -90,7 +82,7 @@ ${DIAGRAM}
 
         it("should override image src from env var", function () {
             process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            const src = $$(ADOC(LOCAL_URL))("img.plantuml").attr("src");
+            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
             expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
         });
     });
@@ -106,27 +98,41 @@ ${DIAGRAM}
         });
 
         it("should fetch when download attribute set", () => {
-            const html = $$(ADOC2([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
+            const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
 
             src = html("img.plantuml").attr("src");
 
             expect(src).toContain(".png");
             expect(fs.existsSync(src)).toBe(true);
+
+            expect(fs.statSync(src).size).toBe(1784);
         });
 
         it("should support imagesoutdir for storing images", () => {
+            const tmpDir = tmp.dirSync({prefix: 'adoc_puml_'});
 
+            const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`,
+                ":plantuml-fetch-diagram:",
+                `:imagesoutdir: ${tmpDir.name}`
+            ]));
+
+            src = html("img.plantuml").attr("src");
+
+            expect(src).toStartWith(tmpDir.name);
+            expect(fs.existsSync(src)).toBe(true);
+
+            expect(fs.statSync(src).size).toBe(1784);
         });
     });
 
     describe("image tag attributes", () => {
         it("pumlid from named attr", () => {
-            const img = $$(ADOC(undefined, ["id=myId"]))("img.plantuml");
+            const img = $$(ADOC([], ["id=myId"]))("img.plantuml");
             expect(img.data("pumlid")).toBe("myId");
         });
 
         it("pumlid from positional attr", () => {
-            const img = $$(ADOC(undefined, ["myId"]))("img.plantuml");
+            const img = $$(ADOC([], ["myId"]))("img.plantuml");
             expect(img.data("pumlid")).toBe("myId");
         });
     });

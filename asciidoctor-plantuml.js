@@ -2,6 +2,7 @@ const plantumlEncoder = require('plantuml-encoder');
 const request = require('sync-request');
 const fs = require('fs');
 const randomstring = require("randomstring");
+const path = require('path');
 
 function createPlantumlBlock(parent, content, attrs) {
 
@@ -21,9 +22,6 @@ ${createImageTag(parent, text, attrs)}
 
 function createImageTag(parent, text, attrs) {
 
-    //console.log(parent.getDocument().getAttributes());
-    // console.log(parent.getDocument().$options());
-
     const plantumlServerURL = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
 
     const encoded = plantumlEncoder.encode(text);
@@ -31,9 +29,13 @@ function createImageTag(parent, text, attrs) {
     let diagramUrl = `${plantumlServerURL}/png/${encoded}`;
 
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
-        const fileName = `./${randomstring.generate()}.png`;
-        fs.writeFileSync(fileName, request('GET', diagramUrl).getBody());
-        diagramUrl = fileName;
+// console.log(parent.getDocument().$options());
+        const diagramPath = path.format({
+            dir: parent.getDocument().getAttribute("imagesoutdir") || "", name: randomstring.generate(), ext: ".png"
+        });
+
+        fs.writeFileSync(diagramPath, request('GET', diagramUrl).getBody());
+        diagramUrl = diagramPath;
     }
 
     let content = '<img ';

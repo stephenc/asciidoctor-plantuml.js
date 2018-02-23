@@ -9,9 +9,11 @@ alice -> bob
 
 const asciidoctor = require('asciidoctor.js')();
 
-const plantuml = require("./asciidoctor-plantuml.js");
-
 const fs = require('fs');
+
+const tmp = require('tmp');
+
+const plantuml = require("./asciidoctor-plantuml.js");
 
 describe("extension registration", function () {
 
@@ -94,9 +96,14 @@ ${DIAGRAM}
     });
 
     describe("image fetching", () => {
-        let src;
+        let src = undefined;
 
-        afterEach(() => fs.unlinkSync(src));
+        afterEach(() => {
+            try {
+                fs.unlinkSync(src)
+            } catch (e) {
+            }
+        });
 
         it("should fetch when download attribute set", () => {
             const html = $$(ADOC2([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
@@ -104,6 +111,7 @@ ${DIAGRAM}
             src = html("img.plantuml").attr("src");
 
             expect(src).toContain(".png");
+            expect(fs.existsSync(src)).toBe(true);
         });
 
         it("should support imagesoutdir for storing images", () => {

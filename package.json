@@ -10,9 +10,10 @@
     "sync-request": "^5.0.0"
   },
   "devDependencies": {
+    "cheerio": "1.0.0-rc.2",
     "jasmine": "3.0.0",
     "jasmine-console-reporter": "2.0.1",
-    "cheerio": "1.0.0-rc.2"
+    "tmp": "0.0.33"
   },
   "scripts": {
     "test": "jasmine --config=jasmine.json"

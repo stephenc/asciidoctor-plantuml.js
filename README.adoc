@@ -43,7 +43,7 @@ Configuration can be provided via http://asciidoctor.org/docs/user-manual/#attri
 
 
 .Supported configuration attributes
-[cols="3,7"]
+[cols="50%,50%"]
 |===
 |Attribute |Description
 

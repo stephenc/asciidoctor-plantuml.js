@@ -61,30 +61,26 @@ ${DIAGRAM}
 
     afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
-    describe("general html structure", () => {
-        it("should create div.imageblock with img inside", () => {
-            const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("div.imageblock");
-            expect(root.find("div.content img.plantuml").length).toBe(1);
-        });
+    it("should create div.imageblock with img inside", () => {
+        const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("div.imageblock");
+        expect(root.find("div.content img.plantuml").length).toBe(1);
     });
 
-    describe("image tag src", () => {
-        it("should point image to document attr", function () {
-            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
-            expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
-        });
+    it("when :plantuml-server-url: diagram src uses it", () => {
+        const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
+        expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
+    });
 
-        it("should set image src from env var", function () {
-            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            const src = $$(ADOC())("img.plantuml").attr("src");
-            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
-        });
+    it("when :plantuml-server-url: missing diagram src taken from ENV", () => {
+        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+        const src = $$(ADOC())("img.plantuml").attr("src");
+        expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
+    });
 
-        it("should override image src from env var", function () {
-            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
-            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
-        });
+    it("ENV var should override :plantuml-server-url: in diagram src", () => {
+        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+        const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
+        expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
     });
 
     describe("image fetching", () => {

@@ -5,7 +5,7 @@
 
 Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
 
-== Development status
+== Project status
 ifdef::env-github[]
 image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Travis Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"
 ]
@@ -36,6 +36,27 @@ It can be used in two modes
 One could easily deploy it as Docker container as described in https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[README].
 
   $ docker run -d -p 8080:8080 plantuml/plantuml-server:jetty
+
+=== Configuration
+
+Configuration can be provided via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
+
+
+.Supported configuration attributes
+|===
+|Attribute |Description
+
+|plantuml-server-url
+|URL of PlantUML Server instance, that will be used for generating diagrams. E.g. http://www.plantuml.com/plantuml
+
+|plantuml-fetch-diagram
+|If set, images will be downloaded and saved to local folder. `img` tags will be pointing to local folder.
+Otherwise, `img` tags will have `src` attribute pointing to `:plantuml-server-url:`
+
+|imagesoutdir
+|Analogue of https://asciidoctor.org/docs/asciidoctor-diagram/#image-output-location[Asciidoctor Diagram] attribute.
+E.g. `./assets/images`
+|===
 
 == Antora integration
 
@@ -75,7 +96,7 @@ asciidoc:
   extensions:
     - asciidoctor-plantuml <1>
   attributes:
-    plantuml-server-public: '{plantuml-server-public}' <2>
+    plantuml-server-url: '{plantuml-server-public}' <2>
 output:
   dir: build
 ----
@@ -106,7 +127,7 @@ const plantuml = require("asciidoctor-plantuml");
 
 const ADOC = `
 == PlantUML
-:plantuml-server-public: {plantuml-server-public} <1>
+:plantuml-server-url: {plantuml-server-public} <1>
 [plantuml]
 ----
 alice -> bob

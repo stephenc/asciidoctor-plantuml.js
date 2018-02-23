@@ -11,6 +11,8 @@ const asciidoctor = require('asciidoctor.js')();
 
 const plantuml = require("./asciidoctor-plantuml.js");
 
+const fs = require('fs');
+
 describe("extension registration", function () {
 
     let registry;
@@ -92,9 +94,16 @@ ${DIAGRAM}
     });
 
     describe("image fetching", () => {
+        let src;
+
+        afterEach(() => fs.unlinkSync(src));
+
         it("should fetch when attribute set", () => {
-            const html = $$(ADOC2([":plantuml-fetch-diagram:"]));
-            expect(html("img.plantuml").attr("src")).toBe("fetchme");
+            const html = $$(ADOC2([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
+
+            src = html("img.plantuml").attr("src");
+
+            expect(src).toContain(".png");
         });
     });
 

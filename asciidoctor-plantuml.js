@@ -1,5 +1,5 @@
 const plantumlEncoder = require('plantuml-encoder');
-const got = require('got');
+const request = require('sync-request');
 const fs = require('fs');
 const randomstring = require("randomstring");
 
@@ -27,12 +27,9 @@ function createImageTag(parent, text, attrs) {
     let diagramUrl = `${plantumlServerURL}/png/${encoded}`;
 
     if (parent.getDocument().isAttribute("plantuml-fetch-diagram")) {
-        got.stream(diagramUrl)
-            .on('error', (error, body, response) => console.log(`${error} ${response}`))
-            .pipe(fs.createWriteStream(`${randomstring.generate()}.png`))
-            .on("finish", () => console.log("finished"));
-
-        diagramUrl = "fetchme";
+        const fileName = `./${randomstring.generate()}.png`;
+        fs.writeFileSync(fileName, request('GET', diagramUrl).getBody());
+        diagramUrl = fileName;
     }
 
     let content = '<img ';

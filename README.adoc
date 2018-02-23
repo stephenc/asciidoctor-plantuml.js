@@ -47,7 +47,7 @@ Extension can be configured via http://asciidoctor.org/docs/user-manual/#attribu
 |Attribute |Description
 
 |plantuml-server-url
-|URL of PlantUML Server instance, that will be used for generating diagrams. E.g. http://www.plantuml.com/plantuml
+| *mandatory* URL of PlantUML Server instance, that will be used for generating diagrams. E.g. http://www.plantuml.com/plantuml
 
 |plantuml-fetch-diagram
 |If set, images will be downloaded and saved to local folder. `img` tags will be pointing to local folder.

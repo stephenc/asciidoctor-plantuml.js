@@ -98,12 +98,16 @@ ${DIAGRAM}
 
         afterEach(() => fs.unlinkSync(src));
 
-        it("should fetch when attribute set", () => {
+        it("should fetch when download attribute set", () => {
             const html = $$(ADOC2([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
 
             src = html("img.plantuml").attr("src");
 
             expect(src).toContain(".png");
+        });
+
+        it("should support imagesoutdir for storing images", () => {
+
         });
     });
 

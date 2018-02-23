@@ -66,23 +66,6 @@ ${DIAGRAM}
         expect(root.find("div.content img.plantuml").length).toBe(1);
     });
 
-    it("when :plantuml-server-url: diagram src uses it", () => {
-        const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
-        expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
-    });
-
-    it("when :plantuml-server-url: missing diagram src taken from ENV", () => {
-        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-        const src = $$(ADOC())("img.plantuml").attr("src");
-        expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
-    });
-
-    it("ENV var should override :plantuml-server-url: in diagram src", () => {
-        process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
-        const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
-        expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
-    });
-
     describe("image fetching", () => {
         let src = undefined;
 
@@ -121,15 +104,41 @@ ${DIAGRAM}
         });
     });
 
-    describe("image tag attributes", () => {
-        it("pumlid from named attr", () => {
-            const img = $$(ADOC([], ["id=myId"]))("img.plantuml");
+    describe("diagram attributes", () => {
+        it("should populate img.data-pumlid from named attr", () => {
+            const img = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ["id=myId"]))("img.plantuml");
             expect(img.data("pumlid")).toBe("myId");
         });
 
-        it("pumlid from positional attr", () => {
-            const img = $$(ADOC([], ["myId"]))("img.plantuml");
+        it("should populate img.data-pumlid from positional attr", () => {
+            const img = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ["myId"]))("img.plantuml");
             expect(img.data("pumlid")).toBe("myId");
+        });
+    });
+
+    describe("PlantUML server URL", () => {
+        it("should use :plantuml-server-url: for diagram src", () => {
+            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
+            expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`);
+        });
+
+        it("when :plantuml-server-url: missing then use PLANTUML_SERVER_URL", () => {
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+            const src = $$(ADOC())("img.plantuml").attr("src");
+            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
+        });
+
+        it("PLANTUML_SERVER_URL should override :plantuml-server-url:", () => {
+            process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL;
+            const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("img.plantuml").attr("src");
+            expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`);
+        });
+
+        it("should generate HTML error when no :plantuml-server-url: and no PLANTUML_SERVER_URL", () => {
+            const rootDiv = $$(ADOC())("div.listingblock");
+            expect(rootDiv.find("img").length).toBe(0);
+            expect(rootDiv.find("div.plantuml-error")).toBeDefined();
+            expect(rootDiv.text()).toContain("PlantUML Server URL is not defined");
         });
     });
 

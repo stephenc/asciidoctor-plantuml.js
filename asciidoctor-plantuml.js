@@ -20,6 +20,10 @@ ${createImageTag(parent, text, attrs)}
 }
 
 function createImageTag(parent, text, attrs) {
+
+    //console.log(parent.getDocument().getAttributes());
+    // console.log(parent.getDocument().$options());
+
     const plantumlServerURL = process.env.PLANTUML_SERVER_URL || parent.getDocument().getAttribute("plantuml-server-url");
 
     const encoded = plantumlEncoder.encode(text);

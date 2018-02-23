@@ -9,7 +9,7 @@ ifdef::env-github[]
 == Project status
 image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Travis Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"
 ]
-image:https://badge.fury.io/js/asciidoctor-plantuml.svg["npm version", link="https://badge.fury.io/js/asciidoctor-plantuml"]
+image:https://badge.fury.io/js/asciidoctor-plantuml.png["npm version", link="https://badge.fury.io/js/asciidoctor-plantuml"]
 endif::[]
 
 == Overview

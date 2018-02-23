@@ -39,8 +39,7 @@ One could easily deploy it as Docker container as described in https://github.co
 
 === Configuration
 
-Configuration can be provided via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
-
+Extension can be configured via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
 
 .Supported configuration attributes
 [cols="3,9"]

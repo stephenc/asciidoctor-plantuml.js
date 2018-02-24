@@ -67,42 +67,17 @@ and providing address of PlantUML server.
 I've created sample https://github.com/eshepelyuk/asciidoctor-plantuml-antora[Antora component] demonstrating usage of this extension.
 Below are the steps to build and run sample site with PlantUML support.
 
-. Create directory for Antora playbook
+. Clone project from GitHub
 
-  $ mkdir plantuml-antora
-  $ cd plantuml-antora
+  $ git clone https://github.com/eshepelyuk/asciidoctor-plantuml-antora.git
+  $ cd asciidoctor-plantuml-antora
 
-. Install additional modules required for this sample
+. Install required modules
 
   $ npm i -g @antora/cli
   $ npm i -g @antora/site-generator-default
+  $ npm i asciidoctor-plantuml
   $ npm i -g serve
-
-. Create Antora playbook
-+
-.site.yml
-[source,yaml]
-[subs="verbatim,attributes"]
-----
-site:
-  title: Antora Demo Site
-  start_page: asciidoctor-plantuml-antora::index.adoc
-content:
-  sources:
-  - url: https://github.com/eshepelyuk/asciidoctor-plantuml-antora.git
-    branches: master
-ui:
-  bundle: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
-asciidoc:
-  extensions:
-    - asciidoctor-plantuml <1>
-  attributes:
-    plantuml-server-url: '{plantuml-server-public}' <2>
-output:
-  dir: build
-----
-<1> enable Asciidoctor PlantUML extension
-<2> use public PlantUML Server
 
 . Generate site
 

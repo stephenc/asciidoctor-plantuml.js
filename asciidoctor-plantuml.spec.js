@@ -61,7 +61,7 @@ ${DIAGRAM}
 
     afterEach(() => process.env.PLANTUML_SERVER_URL = "");
 
-    it("should create div.imageblock with img inside", () => {
+    it("should create div[class=imageblock] with img[class=plantuml] inside", () => {
         const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))("div.imageblock");
         expect(root.find("div.content img.plantuml").length).toBe(1);
     });
@@ -104,7 +104,7 @@ ${DIAGRAM}
         });
     });
 
-    describe("image fetching", () => {
+    describe("diagram fetching", () => {
         let src = undefined;
 
         afterEach(() => {
@@ -114,18 +114,18 @@ ${DIAGRAM}
             }
         });
 
-        it("should fetch when download attribute set", () => {
+        it("should fetch when :plantuml-fetch-diagram: set", () => {
             const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ":plantuml-fetch-diagram:"]));
 
             src = html("img.plantuml").attr("src");
 
             expect(src).toEndWith(".png");
-            expect(fs.existsSync(src)).toBe(true);
 
+            expect(fs.existsSync(src)).toBe(true);
             expect(fs.statSync(src).size).toBe(1784);
         });
 
-        it("should support imagesoutdir for storing images", () => {
+        it("should support :imagesoutdir: for storing images", () => {
             const tmpDir = tmp.dirSync({prefix: 'adoc_puml_'});
 
             const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`,
@@ -135,15 +135,16 @@ ${DIAGRAM}
 
             src = html("img.plantuml").attr("src");
 
-            expect(src).toStartWith(tmpDir.name);
-            expect(fs.existsSync(src)).toBe(true);
+            expect(src).toEndWith(".png");
 
-            expect(fs.statSync(src).size).toBe(1784);
+            const diagramPath = path.format({dir: tmpDir.name, base: src});
+
+            expect(fs.existsSync(diagramPath)).toBe(true);
+            expect(fs.statSync(diagramPath).size).toBe(1784);
         });
 
-        it("should create missing directories of :imagesoutdir:", () => {
-            const tmpDir = tmp.dirSync({prefix: 'adoc_puml_'});
-            const missingDir = path.join(tmpDir.name, "missing", "dir");
+        it("should create nested subdirectories of :imagesoutdir:", () => {
+            const missingDir = path.join(tmp.dirSync({prefix: 'adoc_puml_'}).name, "missing", "dir");
 
             const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`,
                 ":plantuml-fetch-diagram:",
@@ -152,10 +153,12 @@ ${DIAGRAM}
 
             src = html("img.plantuml").attr("src");
 
-            expect(src).toStartWith(missingDir);
-            expect(fs.existsSync(src)).toBe(true);
-            expect(fs.statSync(src).size).toBe(1784)
+            expect(src).toEndWith(".png");
 
+            const diagramPath = path.format({dir: missingDir, base: src});
+
+            expect(fs.existsSync(diagramPath)).toBe(true);
+            expect(fs.statSync(diagramPath).size).toBe(1784);
         });
     });
 

@@ -27,12 +27,11 @@ function createImageTag(serverUrl, shouldFetch, outdir, text, blockId) {
 
     if (shouldFetch) {
         mkdirp.sync(outdir || "");
-        const diagramPath = path.format({
-            dir: outdir || "", name: randomstring.generate(), ext: ".png"
-        });
+        const diagramName = `${randomstring.generate()}.png`;
+        const diagramPath = path.format({dir: outdir || "", base: diagramName});
 
         fs.writeFileSync(diagramPath, request('GET', diagramUrl).getBody());
-        diagramUrl = diagramPath;
+        diagramUrl = diagramName;
     }
 
     let content = '<img ';

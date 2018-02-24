@@ -3,6 +3,7 @@ const request = require('sync-request');
 const fs = require('fs');
 const randomstring = require("randomstring");
 const path = require('path');
+const mkdirp = require('mkdirp');
 
 function createPlantumlBlock(parent, content, attrs) {
 
@@ -25,6 +26,7 @@ function createImageTag(serverUrl, shouldFetch, outdir, text, blockId) {
     let diagramUrl = `${serverUrl}/png/${plantumlEncoder.encode(text)}`;
 
     if (shouldFetch) {
+        mkdirp.sync(outdir || "");
         const diagramPath = path.format({
             dir: outdir || "", name: randomstring.generate(), ext: ".png"
         });

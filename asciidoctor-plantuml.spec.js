@@ -119,7 +119,7 @@ ${DIAGRAM}
 
             src = html("img.plantuml").attr("src");
 
-            expect(src).toContain(".png");
+            expect(src).toEndWith(".png");
             expect(fs.existsSync(src)).toBe(true);
 
             expect(fs.statSync(src).size).toBe(1784);

@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-plantuml",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "PlantUML support for Asciidoctor.JS.",
   "main": "asciidoctor-plantuml.js",
   "dependencies": {
@@ -20,10 +20,7 @@
   "scripts": {
     "test": "jasmine --config=jasmine.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git"
-  },
+  "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [
     "asciidoctor",
     "plantuml",
@@ -36,5 +33,6 @@
   "bugs": {
     "url": "https://github.com/eshepelyuk/asciidoctor-plantuml.js/issues"
   },
-  "homepage": "https://github.com/eshepelyuk/asciidoctor-plantuml.js#readme"
+  "homepage": "https://github.com/eshepelyuk/asciidoctor-plantuml.js#readme",
+  "private": false
 }

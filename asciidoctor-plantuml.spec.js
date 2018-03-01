@@ -7,6 +7,8 @@ alice -> bob
 @enduml
 `;
 
+const DIAGRAM_SIZE = 1785;
+
 const plantuml = require("./asciidoctor-plantuml.js");
 
 const asciidoctor = require('asciidoctor.js')();
@@ -122,7 +124,7 @@ ${DIAGRAM}
             expect(src).toEndWith(".png");
 
             expect(fs.existsSync(src)).toBe(true);
-            expect(fs.statSync(src).size).toBe(1784);
+            expect(fs.statSync(src).size).toBe(DIAGRAM_SIZE);
         });
 
         it("should support :imagesoutdir: for storing images", () => {
@@ -140,7 +142,7 @@ ${DIAGRAM}
             const diagramPath = path.format({dir: tmpDir.name, base: src});
 
             expect(fs.existsSync(diagramPath)).toBe(true);
-            expect(fs.statSync(diagramPath).size).toBe(1784);
+            expect(fs.statSync(diagramPath).size).toBe(DIAGRAM_SIZE);
         });
 
         it("should create nested subdirectories of :imagesoutdir:", () => {
@@ -158,7 +160,7 @@ ${DIAGRAM}
             const diagramPath = path.format({dir: missingDir, base: src});
 
             expect(fs.existsSync(diagramPath)).toBe(true);
-            expect(fs.statSync(diagramPath).size).toBe(1784);
+            expect(fs.statSync(diagramPath).size).toBe(DIAGRAM_SIZE);
         });
     });
 

@@ -7,7 +7,7 @@ alice -> bob
 @enduml
 `;
 
-const DIAGRAM_SIZE = 1785;
+const DIAGRAM_SIZE = 1788;
 
 const plantuml = require('./asciidoctor-plantuml.js');
 const asciidoctor = require('asciidoctor.js')();

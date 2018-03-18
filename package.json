@@ -12,13 +12,15 @@
   },
   "devDependencies": {
     "cheerio": "1.0.0-rc.2",
+    "eslint": "4.19.0",
     "jasmine": "3.0.0",
     "jasmine-expect": "^3.8.3",
     "jasmine-spec-reporter": "^4.2.1",
     "tmp": "0.0.33"
   },
   "scripts": {
-    "test": "jasmine --config=jasmine.json"
+    "test": "jasmine --config=jasmine.json",
+    "lint": "eslint **/*.js"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [

@@ -1,19 +1,11 @@
 /* global Opal */
 const plantumlEncoder = require('plantuml-encoder')
-const request = require('sync-request')
-const fs = require('fs')
-const randomstring = require('randomstring')
-const path = require('path')
-const mkdirp = require('mkdirp')
 
 function createImageSrc (serverUrl, shouldFetch, outdir, text) {
   let diagramUrl = `${serverUrl}/png/${plantumlEncoder.encode(text)}`
   if (shouldFetch) {
-    mkdirp.sync(outdir || '')
-    const diagramName = `${randomstring.generate()}.png`
-    const diagramPath = path.format({dir: outdir || '', base: diagramName})
-    fs.writeFileSync(diagramPath, request('GET', diagramUrl).getBody())
-    diagramUrl = diagramName
+    const fetch = require('./lib/fetch')
+    diagramUrl = fetch.save(diagramUrl, outdir)
   }
   return diagramUrl
 }

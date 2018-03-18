@@ -8,7 +8,7 @@ alice -> bob
 
 const DIAGRAM_SIZE = 1788
 
-const plantuml = require('./asciidoctor-plantuml.js')
+const plantuml = require('../asciidoctor-plantuml.js')
 const asciidoctor = require('asciidoctor.js')()
 const fs = require('fs')
 const tmp = require('tmp')

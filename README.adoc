@@ -3,27 +3,36 @@
 :antora-link: https://antora.org[Antora]
 :toc:
 
-Port of `Ruby` based https://github.com/hsanson/asciidoctor-plantuml[Asciidoctor Plantuml Extension] to `JavaScript` and https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js].
+Extension for https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js] that provides integration with http://plantuml.com[PlantUML]
+using https://github.com/plantuml/plantuml-server[PlantUML Server]
 
 ifdef::env-github[]
-== Project status
+== Project info
+
 image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master["Travis Build Status", link="https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js"
 ]
 image:https://badge.fury.io/js/asciidoctor-plantuml.png["npm version", link="https://badge.fury.io/js/asciidoctor-plantuml"]
+
 endif::[]
 
 == Overview
 
 The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram].
 
-Unlike original code, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
+Unlike `Asciidoctor Diagram`, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
 Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
 
 During page rendering diagram is generated on PlantUML Server and displayed in browser.
 
 === Extension installation
 
-  $ npm i asciidoctor-plantuml
+using npm::
+
+  $ npm -i asciidoctor-plantuml
+
+using yarn::
+
+  $ yarn add asciidoctor-plantuml
 
 === PlantUML server
 
@@ -74,10 +83,8 @@ Below are the steps to build and run sample site with PlantUML support.
 
 . Install required modules
 
-  $ npm i -g @antora/cli
-  $ npm i -g @antora/site-generator-default
-  $ npm i asciidoctor-plantuml
-  $ npm i -g serve
+  $ yarn global add @antora/cli @antora/site-generator-default serve
+  $ yarn add asciidoctor-plantuml
 
 . Generate site
 

@@ -11,3 +11,12 @@ cache:
 script:
   - yarn lint
   - yarn test
+
+deploy:
+  provider: npm
+  email: ${NPM_USER_EMAIL}
+  api_key: ${NPM_USER_API_KEY}
+  on:
+    tags: true
+    repo: eshepelyuk/asciidoctor-plantuml.js
+    node: node

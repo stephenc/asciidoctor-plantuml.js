@@ -19,4 +19,4 @@ deploy:
   on:
     tags: true
     repo: eshepelyuk/asciidoctor-plantuml.js
-    node: node
+

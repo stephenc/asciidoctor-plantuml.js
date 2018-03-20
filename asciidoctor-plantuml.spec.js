@@ -2,10 +2,9 @@
 /* global Opal */
 const LOCAL_URL = 'http://localhost:8080'
 const PLANTUML_REMOTE_URL = 'http://www.plantuml.com/plantuml'
-const DIAGRAM = `@startuml
+const DIAGRAM_SRC = `@startuml
 alice -> bob
-@enduml
-`
+@enduml`
 
 const DIAGRAM_SIZE = 1788
 
@@ -17,18 +16,15 @@ const path = require('path')
 
 tmp.setGracefulCleanup()
 
-describe('extension registration', function () {
+describe('extension registration', () => {
   let registry
 
   let registeredForBlock = () => Opal.send(registry, 'registered_for_block?', ['plantuml', 'listing'])
 
-  beforeAll(function () {
-    registry = asciidoctor.Extensions.create()
-  })
+  beforeAll(() => (registry = asciidoctor.Extensions.create()))
 
   it('should register plantuml block for listing ctx', () => {
     expect(registeredForBlock).toThrowError(/undefined method/)
-
     plantuml.register(registry)
     expect(registeredForBlock()).not.toBeNull()
   })
@@ -41,12 +37,12 @@ describe('conversion to HTML', () => {
 
   const $$ = (doc) => cheerio.load(asciidoctor.convert(doc, {extension_registry: registry}))
 
-  const ADOC = (docAttrs = [], blockAttrs = []) => {
-    return `            
-${docAttrs.join('\n')}        
-[${(blockAttrs ? ['plantuml'].concat(blockAttrs) : ['plantuml']).join(',')}]
+  const ADOC = (docAttrs = [], blockAttrs = [], blockStyleModifiers = '') => {
+    return `
+${docAttrs.join('\n')}
+[${['plantuml' + blockStyleModifiers].concat(blockAttrs || []).join(',')}]
 ----
-${DIAGRAM}
+${DIAGRAM_SRC}
 ----
 `
   }
@@ -55,53 +51,65 @@ ${DIAGRAM}
 
   beforeAll(() => {
     registry = plantuml.register(asciidoctor.Extensions.create())
-    encodedDiagram = plantumlEncoder.encode(DIAGRAM)
+    encodedDiagram = plantumlEncoder.encode(DIAGRAM_SRC)
   })
 
-  afterEach(function () {
-    process.env.PLANTUML_SERVER_URL = ''
-  })
+  afterEach(() => delete process.env.PLANTUML_SERVER_URL)
 
-  it('should create div[class=imageblock] with img[class=plantuml] inside', () => {
-    const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('div.imageblock')
-    expect(root.find('div.content img.plantuml').length).toBe(1)
+  it('should create div[class="imageblock plantuml"] with img inside', () => {
+    const root = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('.imageblock.plantuml')
+    expect(root.find('div.content img').length).toBe(1)
   })
 
   describe('diagram attributes', () => {
-    it('should populate img.data-pumlid from named attr', () => {
-      const img = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ['id=myId']))('img.plantuml')
-      expect(img.data('pumlid')).toBe('myId')
+    it('should populate id from named attr', () => {
+      const imageBlock = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ['id=myId']))('.imageblock.plantuml')
+      expect(imageBlock.attr('id')).toBe('myId')
     })
 
-    it('should populate img.data-pumlid from positional attr', () => {
-      const img = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ['myId']))('img.plantuml')
-      expect(img.data('pumlid')).toBe('myId')
+    it('should populate id from block style modifier', () => {
+      const imageBlock = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], [], '#myId'))('.imageblock.plantuml')
+      expect(imageBlock.attr('id')).toBe('myId')
+    })
+
+    it('should populate role from named attr', () => {
+      const imageBlock = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], ['role=sequence']))('.imageblock.plantuml')
+      expect(imageBlock.attr('class')).toBe('imageblock sequence plantuml')
+    })
+
+    it('should populate role from block style modifier', () => {
+      const imageBlock = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`], [], '.sequence'))('.imageblock.plantuml')
+      expect(imageBlock.attr('class')).toBe('imageblock sequence plantuml')
+    })
+
+    it('should set alt attribute on image', () => {
+      const img = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('.imageblock.plantuml img')
+      expect(img.attr('alt')).toBe('diagram')
     })
   })
 
   describe('PlantUML server URL', () => {
     it('should use :plantuml-server-url: for diagram src', () => {
-      const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('img.plantuml').attr('src')
+      const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('.imageblock.plantuml img').attr('src')
       expect(src).toBe(`${LOCAL_URL}/png/${encodedDiagram}`)
     })
 
     it('when :plantuml-server-url: missing then use PLANTUML_SERVER_URL', () => {
       process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL
-      const src = $$(ADOC())('img.plantuml').attr('src')
+      const src = $$(ADOC())('.imageblock.plantuml img').attr('src')
       expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`)
     })
 
     it('PLANTUML_SERVER_URL should override :plantuml-server-url:', () => {
       process.env.PLANTUML_SERVER_URL = PLANTUML_REMOTE_URL
-      const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('img.plantuml').attr('src')
+      const src = $$(ADOC([`:plantuml-server-url: ${LOCAL_URL}`]))('.imageblock.plantuml img').attr('src')
       expect(src).toBe(`${PLANTUML_REMOTE_URL}/png/${encodedDiagram}`)
     })
 
     it('should generate HTML error when no :plantuml-server-url: and no PLANTUML_SERVER_URL', () => {
-      const rootDiv = $$(ADOC())('div.listingblock')
-      expect(rootDiv.find('img').length).toBe(0)
-      expect(rootDiv.find('div.plantuml-error')).toBeDefined()
-      expect(rootDiv.text()).toContain('PlantUML Server URL is not defined')
+      const listingBlock = $$(ADOC())('.listingblock.plantuml-error')
+      expect(listingBlock.find('img').length).toBe(0)
+      expect(listingBlock.text()).toContain('@startuml')
     })
   })
 
@@ -119,7 +127,7 @@ ${DIAGRAM}
     it('should fetch when :plantuml-fetch-diagram: set', () => {
       const html = $$(ADOC([`:plantuml-server-url: ${PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:']))
 
-      src = html('img.plantuml').attr('src')
+      src = html('.imageblock.plantuml img').attr('src')
 
       expect(src).toEndWith('.png')
 
@@ -135,7 +143,7 @@ ${DIAGRAM}
         `:imagesoutdir: ${tmpDir.name}`
       ]))
 
-      src = html('img.plantuml').attr('src')
+      src = html('.imageblock.plantuml img').attr('src')
 
       expect(src).toEndWith('.png')
 
@@ -153,7 +161,7 @@ ${DIAGRAM}
         `:imagesoutdir: ${missingDir}`
       ]))
 
-      src = html('img.plantuml').attr('src')
+      src = html('.imageblock.plantuml img').attr('src')
 
       expect(src).toEndWith('.png')
 

@@ -22,11 +22,20 @@
     "jasmine": "3.0.0",
     "jasmine-expect": "^3.8.3",
     "jasmine-spec-reporter": "^4.2.1",
-    "tmp": "0.0.33"
+    "karma": "2.0.0",
+    "karma-browserify": "5.2.0",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-jasmine": "1.1.1",
+    "tmp": "0.0.33",
+    "webpack": "4.1.1",
+    "webpack-cli": "2.0.12"
   },
   "scripts": {
-    "test": "jasmine --config=jasmine.json",
-    "lint": "eslint **/*.js"
+    "test:node": "jasmine --config=jasmine.json",
+    "test:browser": "karma start karma.conf.js",
+    "test": "npm run test:node && npm run test:browser",
+    "lint": "eslint asciidoctor-plantuml.js spec lib",
+    "build": "webpack"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [

@@ -107,9 +107,9 @@ Sample code
 [subs="verbatim,attributes"]
 ....
 const asciidoctor = require('asciidoctor.js')();
-const plantuml = require("asciidoctor-plantuml");
+const plantuml = require('asciidoctor-plantuml');
 
-const ADOC = `
+const asciidocContent = `
 == PlantUML
 :plantuml-server-url: {plantuml-server-public} <1>
 [plantuml]
@@ -120,11 +120,11 @@ bob ..> alice
 `;
 
 plantuml.register(asciidoctor.Extensions);
-console.log(asciidoctor.convert(ADOC)); <2>
+console.log(asciidoctor.convert(asciidocContent)); <2>
 
 const registry = asciidoctor.Extensions.create();
 plantuml.register(registry);
-console.log(asciidoctor.convert(ADOC, {'extension_registry': registry})); <3>
+console.log(asciidoctor.convert(asciidocContent, {'extension_registry': registry})); <3>
 
 ....
 <1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.

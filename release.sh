@@ -17,4 +17,4 @@ echo $VERSION
 
 git tag -a "$VERSION" -m "$VERSION"
 git commit -am "$VERSION"
-git push --tags
+git push --tags origin/master

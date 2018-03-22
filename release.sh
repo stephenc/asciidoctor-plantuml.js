@@ -15,6 +15,6 @@ VERSION=$(cat package.json | jq -r .version)
 
 echo $VERSION
 
-git tag -a "$VERSION" -m "$VERSION"
 git commit -am "$VERSION"
+git tag "$VERSION"
 git push --tags origin master

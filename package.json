@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-plantuml",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "PlantUML support for Asciidoctor.JS.",
   "main": "dist/asciidoctor-plantuml.js",
   "files": [

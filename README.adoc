@@ -25,7 +25,7 @@ Inside `image` tags produced by the extension the `src` attribute contains a lin
 
 During page rendering diagram is generated on PlantUML Server and displayed in browser.
 
-=== Extension installation
+=== Installation
 
 using npm::
 
@@ -34,6 +34,7 @@ using npm::
 using yarn::
 
   $ yarn add asciidoctor-plantuml
+
 
 === PlantUML server
 
@@ -100,6 +101,15 @@ Below are the steps to build and run sample site with PlantUML support.
 Open http://localhost:5000 in browser.
 
 == Asciidoctor.js integration
+
+[TIP]
+====
+For using in browser add following to HTML page
+[source,html]
+----
+<script src="node_modules/asciidoctor-plantuml/dist/bundle.js"></script>
+----
+====
 
 Sample code
 

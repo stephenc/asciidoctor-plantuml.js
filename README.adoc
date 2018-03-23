@@ -154,7 +154,7 @@ Create file with following content and open in in browsert::
 <html>
 <head>
 <script src="node_modules/asciidoctor.js/dist/browser/asciidoctor.js"></script>
-<script src="node_modules/asciidoctor-plantuml/dist/bundle.js"></script>        
+<script src="node_modules/asciidoctor-plantuml/dist/browser/asciidoctor-plantuml.js"></script>
 </head>
 <body>
     <script>

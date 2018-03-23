@@ -102,19 +102,17 @@ Open http://localhost:5000 in browser.
 
 == Asciidoctor.js integration
 
-[TIP]
-====
-For using in browser add following to HTML page
-[source,html]
-----
-<script src="node_modules/asciidoctor-plantuml/dist/bundle.js"></script>
-----
-====
+=== Using in Node.JS
 
-Sample code
+Install dependency::
 
+  $ yarn add asciidoctor-plantuml
+
+Create file with following content and run it::
++
 [source,javascript]
 [subs="verbatim,attributes"]
+.plantuml.js
 ....
 const asciidoctor = require('asciidoctor.js')();
 const plantuml = require('asciidoctor-plantuml');
@@ -137,9 +135,58 @@ plantuml.register(registry);
 console.log(asciidoctor.convert(asciidocContent, {'extension_registry': registry})); <3>
 
 ....
-<1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute.
+<1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute
 <2> usage with global extension registry
 <3> usage with custom registry
+
+=== Using in browser
+
+Install dependency::
+
+  $ yarn add asciidoctor-plantuml
+
+Create file with following content and open in in browsert::
++
+[source,html]
+[subs="verbatim,attributes"]
+.plantuml.html
+....
+<html>
+<head>
+<script src="node_modules/asciidoctor.js/dist/browser/asciidoctor.js"></script>
+<script src="node_modules/asciidoctor-plantuml/dist/bundle.js"></script>        
+</head>
+<body>
+    <script>
+const asciidocContent = `
+== PlantUML
+:plantuml-server-url: {plantuml-server-public} <1>
+[plantuml]
+----
+alice -> bob
+bob ..> alice
+----
+`;
+
+var asciidoctor = Asciidoctor();
+var plantuml = AsciidoctorPlantuml;
+
+plantuml.register(asciidoctor.Extensions);
+console.log(asciidoctor.convert(asciidocContent)); <2>
+
+const registry = asciidoctor.Extensions.create();
+plantuml.register(registry);
+console.log(asciidoctor.convert(asciidocContent, {'extension_registry': registry})); <3>
+    </script>
+
+</body>
+</html>
+....
+<1> it's possible to configure different URL for PlantUML server using Asciidoctor attribute
+<2> usage with global extension registry
+<3> usage with custom registry
+
+=== Output
 
 Regardless of global or custom registry usage, produced HTML output will look like
 
@@ -151,7 +198,7 @@ Regardless of global or custom registry usage, produced HTML output will look li
 <div class="sectionbody">
 <div class="imageblock plantuml">
 <div class="content">
-<img src="http://www.plantuml.com/plantuml/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200" alt="diagram">
+<img src="{plantuml-server-public}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200" alt="diagram">
 </div>
 </div>
 </div>

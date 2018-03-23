@@ -39,7 +39,7 @@
     "test": "yarn test:node && yarn test:browser",
     "lint": "eslint test src",
     "build:browser": "webpack",
-    "build:node": "mkdir -p dist/node && cp -R src/* dist/node",
+    "build:node": "bash ./script/build_node.sh",
     "build": "yarn build:browser && yarn build:node",
     "clean": "rm -rf dist"
   },

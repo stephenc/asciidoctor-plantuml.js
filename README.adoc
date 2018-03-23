@@ -149,7 +149,11 @@ Regardless of global or custom registry usage, produced HTML output will look li
 <div class="sect1">
 <h2 id="_plantuml">PlantUML</h2>
 <div class="sectionbody">
-<div class="imageblock"><div class="content"><img class="plantuml" src="{plantuml-server-public}/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200"/></div></div>
+<div class="imageblock plantuml">
+<div class="content">
+<img src="http://www.plantuml.com/plantuml/png/Iyp9J4vLqBLJICfFuW9Y1JqzEuL4a200" alt="diagram">
+</div>
+</div>
 </div>
 </div>
 ----

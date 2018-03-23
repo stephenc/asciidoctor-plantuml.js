@@ -2,14 +2,14 @@ const webpack = require('webpack')
 const path = require('path')
 
 const config = {
-  entry: './asciidoctor-plantuml.js',
+  entry: './src/asciidoctor-plantuml.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist/browser'),
+    filename: 'asciidoctor-plantuml.js',
     library: 'AsciidoctorPlantuml'
   },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/lib\/fetch$/)
+    new webpack.IgnorePlugin(/^\.\/fetch$/)
   ],
   mode: 'production'
 }

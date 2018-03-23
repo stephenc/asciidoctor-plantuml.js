@@ -5,16 +5,16 @@ module.exports = function (config) {
     frameworks: [ 'jasmine', 'browserify' ],
 
     files: [
-      'dist/bundle.js',
-      'spec/shared.js',
-      'spec/browser.spec.js'
+      'dist/browser/asciidoctor-plantuml.js',
+      'test/shared.js',
+      'test/browser.spec.js'
     ],
 
     reporters: [ 'dots' ],
 
     preprocessors: {
-      'spec/browser.spec.js': [ 'browserify' ],
-      'spec/shared.js': [ 'browserify' ]
+      'test/browser.spec.js': ['browserify'],
+      'test/shared.js': ['browserify']
     },
 
     browsers: ['ChromeHeadlessNoSandbox'],

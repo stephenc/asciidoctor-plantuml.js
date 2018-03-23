@@ -4,7 +4,7 @@ const plantumlEncoder = require('plantuml-encoder')
 function createImageSrc (serverUrl, shouldFetch, outdir, text) {
   let diagramUrl = `${serverUrl}/png/${plantumlEncoder.encode(text)}`
   if (shouldFetch) {
-    diagramUrl = require('./lib/fetch').save(diagramUrl, outdir)
+    diagramUrl = require('./fetch').save(diagramUrl, outdir)
   }
   return diagramUrl
 }

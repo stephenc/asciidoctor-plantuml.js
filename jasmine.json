@@ -1,10 +1,10 @@
 {
   "spec_dir": ".",
   "spec_files": [
-    "./spec/node.spec.js"
+    "./test/node.spec.js"
   ],
   "helpers": [
-    "./spec/*.helper.js",
+    "./test/*.helper.js",
     "node_modules/jasmine-expect/index.js"
   ],
   "stopSpecOnExpectationFailure": false,

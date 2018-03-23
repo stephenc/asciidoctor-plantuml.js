@@ -2,7 +2,7 @@
   "name": "asciidoctor-plantuml",
   "version": "0.8.0",
   "description": "PlantUML support for Asciidoctor.JS.",
-  "main": "dist/asciidoctor-plantuml.js",
+  "main": "dist/node/asciidoctor-plantuml.js",
   "files": [
     "dist"
   ],
@@ -36,9 +36,11 @@
   "scripts": {
     "test:node": "jasmine --config=jasmine.json",
     "test:browser": "karma start karma.conf.js",
-    "test": "npm run test:node && npm run test:browser",
-    "lint": "eslint asciidoctor-plantuml.js spec lib",
-    "build": "webpack && cp ./asciidoctor-plantuml.js dist && cp -R lib dist",
+    "test": "yarn test:node && yarn test:browser",
+    "lint": "eslint test src",
+    "build:browser": "webpack",
+    "build:node": "mkdir -p dist/node && cp -R src/* dist/node",
+    "build": "yarn build:browser && yarn build:node",
     "clean": "rm -rf dist"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",

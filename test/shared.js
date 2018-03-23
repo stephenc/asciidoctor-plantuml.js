@@ -1,8 +1,8 @@
 /* eslint-env jasmine */
 /* global Opal */
-const asciidoctorPlantuml = require('../asciidoctor-plantuml.js')
+const asciidoctorPlantuml = require('../src/asciidoctor-plantuml.js')
 const plantumlEncoder = require('plantuml-encoder')
-const asciidoctor = require('asciidoctor.js')()
+const asciidoctor = require('../node_modules/asciidoctor.js/dist/node/asciidoctor')()
 const cheerio = require('cheerio')
 
 const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create())

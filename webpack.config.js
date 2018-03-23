@@ -1,5 +1,5 @@
-const webpack = require('webpack');
-const path = require('path');
+const webpack = require('webpack')
+const path = require('path')
 
 const config = {
   entry: './asciidoctor-plantuml.js',
@@ -12,7 +12,6 @@ const config = {
     new webpack.IgnorePlugin(/^\.\/lib\/fetch$/)
   ],
   mode: 'production'
-};
+}
 
-module.exports = config;
-
+module.exports = config

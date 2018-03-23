@@ -2,7 +2,10 @@
   "name": "asciidoctor-plantuml",
   "version": "0.2.11",
   "description": "PlantUML support for Asciidoctor.JS.",
-  "main": "asciidoctor-plantuml.js",
+  "main": "dist/asciidoctor-plantuml.js",
+  "files": [
+      "dist"
+  ],
   "dependencies": {
     "asciidoctor.js": "1.5.6-rc.1",
     "mkdirp": "^0.5.1",
@@ -35,7 +38,8 @@
     "test:browser": "karma start karma.conf.js",
     "test": "npm run test:node && npm run test:browser",
     "lint": "eslint asciidoctor-plantuml.js spec lib",
-    "build": "webpack"
+    "build": "webpack && cp ./asciidoctor-plantuml.js dist && cp -R lib dist",
+    "clean": "rm -rf dist"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [

@@ -1,7 +1,10 @@
 node_modules
 .idea
-*.png
-*.adoc
-*.html
 .asciidoctor
-*.spec.js
+lib
+spec
+*.yml
+*.json
+*.sh
+*.adoc
+*.md

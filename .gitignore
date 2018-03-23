@@ -5,3 +5,4 @@
 *.html
 .asciidoctor
 *.log
+/asciidoctor-plantuml-v0.2.12.tgz

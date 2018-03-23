@@ -15,14 +15,15 @@ script:
   - yarn test
 
 deploy:
-  skip_cleanup: true
   - provider: npm
+    skip_cleanup: true
     email: ${NPM_USER_EMAIL}
     api_key: ${NPM_USER_API_KEY}
     on:
       tags: true
       repo: eshepelyuk/asciidoctor-plantuml.js
   - provider: releases
+    skip_cleanup: true
     api_key: ${GITHUB_TOKEN}
     on:
       tags: true

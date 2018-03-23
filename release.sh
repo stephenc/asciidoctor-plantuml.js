@@ -2,7 +2,7 @@
 
 case $1 in
     major|minor|patch)
-        yarn version --new-version $1
+        yarn version  --no-git-tag-version --new-version $1
     ;;
 
     *)

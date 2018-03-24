@@ -86,6 +86,12 @@ sharedSpec.run = function () {
         const img = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`]))('.imageblock.plantuml img')
         expect(img.attr('alt')).toBe('diagram')
       })
+
+      it('should set alt attribute on image from positional attr :target:', () => {
+        const img = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['myFile']))('.imageblock.plantuml img')
+        expect(img.attr('alt')).toBe('myFile')
+      })
+
     })
 
     describe('PlantUML server URL', () => {

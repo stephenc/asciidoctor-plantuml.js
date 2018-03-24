@@ -9,21 +9,6 @@ const shared = require('./shared.js')
 shared.run() // Run shared tests
 
 describe('conversion to HTML', () => {
-  afterEach(() => delete process.env.PLANTUML_SERVER_URL)
-
-  describe('PlantUML server URL', () => {
-    it('when :plantuml-server-url: missing then use PLANTUML_SERVER_URL', () => {
-      process.env.PLANTUML_SERVER_URL = shared.PLANTUML_REMOTE_URL
-      const src = shared.toJQueryDOM(shared.asciidocContent())('.imageblock.plantuml img').attr('src')
-      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/${shared.encodedDiagram}`)
-    })
-
-    it('PLANTUML_SERVER_URL should override :plantuml-server-url:', () => {
-      process.env.PLANTUML_SERVER_URL = shared.PLANTUML_REMOTE_URL
-      const src = shared.toJQueryDOM(shared.asciidocContent([`:plantuml-server-url: ${shared.LOCAL_URL}`]))('.imageblock.plantuml img').attr('src')
-      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/${shared.encodedDiagram}`)
-    })
-  })
 
   describe('diagram fetching', () => {
     let src
@@ -42,6 +27,16 @@ describe('conversion to HTML', () => {
       src = html('.imageblock.plantuml img').attr('src')
 
       expect(src).toEndWith('.png')
+      expect(fs.existsSync(src)).toBe(true)
+      expect(fs.statSync(src).size).toBe(shared.DIAGRAM_SIZE)
+    })
+
+    it('should fetch to named file when positional attr :target: is set', () => {
+      const html = shared.toJQueryDOM(shared.asciidocContent([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['myFile']))
+
+      src = html('.imageblock.plantuml img').attr('src')
+
+      expect(src).toEndWith('myFile.png')
       expect(fs.existsSync(src)).toBe(true)
       expect(fs.statSync(src).size).toBe(shared.DIAGRAM_SIZE)
     })

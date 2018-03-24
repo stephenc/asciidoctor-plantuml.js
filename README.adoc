@@ -23,18 +23,11 @@ The extension tries to mimic behaviour of `[plantuml]` block from https://asciid
 Unlike `Asciidoctor Diagram`, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
 Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
 
-During page rendering diagram is generated on PlantUML Server and displayed in browser.
-
-=== Installation
-
-using npm::
-
-  $ npm -i asciidoctor-plantuml
-
-using yarn::
-
-  $ yarn add asciidoctor-plantuml
-
+[NOTE]
+====
+Since `PlantUML server` supports some other formats, it's possible to use http://ditaa.sourceforge.net/[Ditaa syntax] as well.
+Check http://plantuml.com/[PlantUML site] for list of supported diagrams.
+====
 
 === PlantUML server
 

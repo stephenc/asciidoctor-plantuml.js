@@ -47,9 +47,10 @@
   "keywords": [
     "asciidoctor",
     "plantuml",
-    "diagram",
     "antora",
-    "asciidoctorjs"
+    "asciidoctorjs",
+    "diagram",
+    "ditaa"
   ],
   "author": "Evgeny Shepelyuk",
   "license": "ISC",

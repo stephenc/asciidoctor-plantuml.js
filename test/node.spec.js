@@ -2,14 +2,12 @@
 const fs = require('fs')
 const tmp = require('tmp')
 const path = require('path')
-
 tmp.setGracefulCleanup()
 
 const shared = require('./shared.js')
 shared.run() // Run shared tests
 
 describe('conversion to HTML', () => {
-
   describe('diagram fetching', () => {
     let src
 

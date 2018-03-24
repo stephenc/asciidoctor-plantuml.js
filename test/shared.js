@@ -91,7 +91,6 @@ sharedSpec.run = function () {
         const img = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['myFile']))('.imageblock.plantuml img')
         expect(img.attr('alt')).toBe('myFile')
       })
-
     })
 
     describe('PlantUML server URL', () => {

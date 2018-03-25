@@ -17,7 +17,7 @@ function plantumlBlock () {
     const doc = parent.getDocument()
     const diagramText = reader.getString()
     const serverUrl = doc.getAttribute('plantuml-server-url')
-    let roles = Opal.hash_get(attrs, 'role')
+    const role = Opal.hash_get(attrs, 'role')
     const blockId = Opal.hash_get(attrs, 'id')
 
     if (serverUrl) {
@@ -25,12 +25,12 @@ function plantumlBlock () {
       const shouldFetch = doc.isAttribute('plantuml-fetch-diagram')
       const imagesOutDir = doc.getAttribute('imagesoutdir')
       const imageUrl = createImageSrc(serverUrl, shouldFetch, target, imagesOutDir, diagramText)
-      const blockAttrs = {role: roles ? `${roles} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
-      if (blockId) blockAttrs['id'] = blockId
-      return this.createImageBlock(parent, blockAttrs, blockAttrs)
+      const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
+      if (blockId) blockAttrs.id = blockId
+      return this.createImageBlock(parent, blockAttrs)
     } else {
       console.warn('Skipping plantuml block. PlantUML Server URL not defined in :plantuml-server-url: attribute.')
-      Opal.hash_put(attrs, 'role', roles ? `${roles} plantuml-error` : 'plantuml-error')
+      Opal.hash_put(attrs, 'role', role ? `${role} plantuml-error` : 'plantuml-error')
       return this.createBlock(parent, 'listing', diagramText, attrs)
     }
   })

@@ -11,7 +11,7 @@ function createImageSrc (serverUrl, shouldFetch, target, outdir, text) {
 
 function plantumlBlock () {
   this.named('plantuml')
-  this.onContext('listing')
+  this.onContext(['listing', 'literal'])
   this.positionalAttributes('target')
   this.process((parent, reader, attrs) => {
     const doc = parent.getDocument()
@@ -31,7 +31,7 @@ function plantumlBlock () {
     } else {
       console.warn('Skipping plantuml block. PlantUML Server URL not defined in :plantuml-server-url: attribute.')
       Opal.hash_put(attrs, 'role', role ? `${role} plantuml-error` : 'plantuml-error')
-      return this.createBlock(parent, 'listing', diagramText, attrs)
+      return this.createBlock(parent, Opal.hash_get(attrs, 'cloaked-context'), diagramText, attrs)
     }
   })
 }

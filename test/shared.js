@@ -28,12 +28,12 @@ sharedSpec.toJQueryDOM = (asciidocContent) => cheerio.load(asciidoctor.convert(a
  * Generate an AsciiDoc content containing a PlantUML diagram
  * @returns {string}
  */
-sharedSpec.asciidocContent = (docAttrs = [], blockAttrs = [], blockStyleModifiers = '') => `
+sharedSpec.asciidocContent = (docAttrs = [], blockAttrs = [], blockStyleModifiers = '', blockDelimiter = '----') => `
 ${docAttrs.join('\n')}
 [${['plantuml' + blockStyleModifiers].concat(blockAttrs || []).join(',')}]
-----
+${blockDelimiter}
 ${sharedSpec.DIAGRAM_SRC}
-----
+${blockDelimiter}
 `
 /**
  * Run the tests
@@ -42,22 +42,33 @@ sharedSpec.run = function () {
   describe('extension registration', () => {
     let registry
 
-    let registeredForBlock = () => Opal.send(registry, 'registered_for_block?', ['plantuml', 'listing'])
+    let registeredForBlock = (context) => Opal.send(registry, 'registered_for_block?', ['plantuml', context])
 
-    beforeAll(() => (registry = asciidoctor.Extensions.create()))
+    beforeEach(() => (registry = asciidoctor.Extensions.create()))
 
-    it('should register plantuml block for listing ctx', () => {
-      expect(registeredForBlock).toThrowError(/undefined method/)
+    it('should register plantuml style for listing block', () => {
+      expect(() => registeredForBlock('listing')).toThrowError(/undefined method/)
       asciidoctorPlantuml.register(registry)
-      expect(registeredForBlock()).not.toBeNull()
+      expect(registeredForBlock('listing')).not.toBeNull()
+    })
+
+    it('should register plantuml style for literal block', () => {
+      expect(() => registeredForBlock('literal')).toThrowError(/undefined method/)
+      asciidoctorPlantuml.register(registry)
+      expect(registeredForBlock('literal')).not.toBeNull()
     })
   })
 
   describe('conversion to HTML', () => {
     let encodedDiagram = plantumlEncoder.encode(sharedSpec.DIAGRAM_SRC)
 
-    it('should create div[class="imageblock plantuml"] with img inside', () => {
+    it('should create div[class="imageblock plantuml"] with img inside from listing block', () => {
       const root = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`]))('.imageblock.plantuml')
+      expect(root.find('div.content img').length).toBe(1)
+    })
+
+    it('should create div[class="imageblock plantuml"] with img inside from literal block', () => {
+      const root = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], [], '', '....'))('.imageblock.plantuml')
       expect(root.find('div.content img').length).toBe(1)
     })
 
@@ -99,10 +110,16 @@ sharedSpec.run = function () {
         expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
       })
 
-      it('should generate HTML error when no :plantuml-server-url: and no PLANTUML_SERVER_URL', () => {
+      it('should generate HTML error when no :plantuml-server-url: and no PLANTUML_SERVER_URL for listing block', () => {
         const listingBlock = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent())('.listingblock.plantuml-error')
         expect(listingBlock.find('img').length).toBe(0)
         expect(listingBlock.text()).toContain('@startuml')
+      })
+
+      it('should generate HTML error when no :plantuml-server-url: and no PLANTUML_SERVER_URL for literal', () => {
+        const literalBlock = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([], [], '', '....'))('.literalblock.plantuml-error')
+        expect(literalBlock.find('img').length).toBe(0)
+        expect(literalBlock.text()).toContain('@startuml')
       })
     })
   })

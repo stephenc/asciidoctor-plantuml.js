@@ -15,7 +15,7 @@ function plantumlBlock () {
   this.positionalAttributes('target')
   this.process((parent, reader, attrs) => {
     const doc = parent.getDocument()
-    const diagramText = reader.getLines().join('\n')
+    const diagramText = reader.getString()
     const serverUrl = doc.getAttribute('plantuml-server-url')
     let roles = Opal.hash_get(attrs, 'role')
     const blockId = Opal.hash_get(attrs, 'id')

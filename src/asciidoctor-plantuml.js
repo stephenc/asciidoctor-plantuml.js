@@ -42,7 +42,7 @@ module.exports.register = function register (registry) {
       this.block(plantumlBlock)
     })
   } else if (typeof registry.block === 'function') {
-    registry.block('plantuml', plantumlBlock)
+    registry.block(plantumlBlock)
   }
   return registry
 }

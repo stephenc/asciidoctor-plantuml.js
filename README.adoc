@@ -1,4 +1,3 @@
-
 = Asciidoctor Plantuml Extension
 :plantuml-server-public: http://www.plantuml.com/plantuml
 :antora-link: https://antora.org[Antora]

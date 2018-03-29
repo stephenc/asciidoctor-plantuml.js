@@ -9,6 +9,7 @@ cache:
     - node_modules
 
 script:
+  - yarn add asciidoctor.js@^1.5.6-rc.1
   - yarn clean
   - yarn lint
   - yarn build

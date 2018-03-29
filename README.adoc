@@ -79,7 +79,7 @@ Below are the steps to build and run sample site with PlantUML support.
 . Install required modules
 
   $ yarn global add @antora/cli @antora/site-generator-default serve
-  $ yarn add asciidoctor-plantuml
+  $ yarn add asciidoctor.js asciidoctor-plantuml
 
 . Generate site
 
@@ -97,9 +97,9 @@ Open http://localhost:5000 in browser.
 
 === Using in Node.JS
 
-Install dependency::
+Install dependencies::
 
-  $ yarn add asciidoctor-plantuml
+  $ yarn add asciidoctor.js asciidoctor-plantuml
 
 Create file with following content and run it::
 +
@@ -134,9 +134,9 @@ console.log(asciidoctor.convert(asciidocContent, {'extension_registry': registry
 
 === Using in browser
 
-Install dependency::
+Install dependencies::
 
-  $ yarn add asciidoctor-plantuml
+  $ yarn add asciidoctor.js asciidoctor-plantuml
 
 Create file with following content and open in in browsert::
 +

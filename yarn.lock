@@ -3907,6 +3907,10 @@ karma-jasmine@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.1.1.tgz#6fe840e75a11600c9d91e84b33c458e1c46a3529"
 
+karma-opera-launcher@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/karma-opera-launcher/-/karma-opera-launcher-1.0.0.tgz#fa51628531a1d0be84b2d8dc0d7ee209fc8ff91a"
+
 karma@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/karma/-/karma-2.0.0.tgz#a02698dd7f0f05ff5eb66ab8f65582490b512e58"

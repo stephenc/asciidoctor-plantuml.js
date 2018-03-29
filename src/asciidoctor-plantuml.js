@@ -1,10 +1,12 @@
 /* global Opal */
 const plantumlEncoder = require('plantuml-encoder')
 
-function createImageSrc (serverUrl, shouldFetch, target, outdir, text) {
+function createImageSrc (doc, text, target) {
+  const serverUrl = doc.getAttribute('plantuml-server-url')
+  const shouldFetch = doc.isAttribute('plantuml-fetch-diagram')
   let diagramUrl = `${serverUrl}/png/${plantumlEncoder.encode(text)}`
   if (shouldFetch) {
-    diagramUrl = require('./fetch').save(diagramUrl, target, outdir)
+    diagramUrl = require('./fetch').save(diagramUrl, doc, target)
   }
   return diagramUrl
 }
@@ -22,9 +24,7 @@ function plantumlBlock () {
 
     if (serverUrl) {
       const target = Opal.hash_get(attrs, 'target')
-      const shouldFetch = doc.isAttribute('plantuml-fetch-diagram')
-      const imagesOutDir = doc.getAttribute('imagesoutdir')
-      const imageUrl = createImageSrc(serverUrl, shouldFetch, target, imagesOutDir, diagramText)
+      const imageUrl = createImageSrc(doc, diagramText, target)
       const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
       if (blockId) blockAttrs.id = blockId
       return this.createImageBlock(parent, blockAttrs)

@@ -13,6 +13,7 @@
     "sync-request": "^5.0.0"
   },
   "devDependencies": {
+    "asciidoctor.js": "^1.5.6-rc.1",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",
@@ -32,6 +33,9 @@
     "tmp": "0.0.33",
     "webpack": "4.1.1",
     "webpack-cli": "2.0.12"
+  },
+  "peerDependencies": {
+    "asciidoctor.js": "^1.5.6-rc.1"
   },
   "scripts": {
     "test:node": "jasmine --config=jasmine.json",
@@ -58,8 +62,5 @@
     "url": "https://github.com/eshepelyuk/asciidoctor-plantuml.js/issues"
   },
   "homepage": "https://github.com/eshepelyuk/asciidoctor-plantuml.js#readme",
-  "private": false,
-  "peerDependencies": {
-    "asciidoctor.js": "^1.5.6-rc.1"
-  }
+  "private": false
 }

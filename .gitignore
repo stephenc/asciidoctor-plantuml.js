@@ -6,4 +6,3 @@
 .asciidoctor
 *.log
 *.tgz
-CHANGELOG.*

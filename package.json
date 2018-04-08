@@ -13,6 +13,7 @@
     "sync-request": "^5.0.0"
   },
   "devDependencies": {
+    "@octokit/rest": "^15.2.6",
     "asciidoctor.js": "^1.5.6-rc.1",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",
@@ -22,6 +23,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
+    "get-stdin": "^6.0.0",
     "jasmine": "3.0.0",
     "jasmine-expect": "^3.8.3",
     "jasmine-spec-reporter": "^4.2.1",

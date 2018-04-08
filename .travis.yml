@@ -2,14 +2,18 @@ language: node_js
 
 node_js:
   - "8"
+python:
+  - "3.6"
 
 cache:
   yarn: true
   directories:
     - node_modules
 
+install:
+  - pip install --user loghub
+
 script:
-  - yarn add asciidoctor.js@^1.5.6-rc.1
   - yarn clean
   - yarn lint
   - yarn build
@@ -22,10 +26,16 @@ deploy:
     api_key: ${NPM_USER_API_KEY}
     on:
       tags: true
-      repo: eshepelyuk/asciidoctor-plantuml.js
+      repo: ${TRAVIS_REPO_SLUG}
   - provider: releases
     skip_cleanup: true
     api_key: ${GITHUB_TOKEN}
     on:
       tags: true
-      repo: eshepelyuk/asciidoctor-plantuml.js
+      repo: ${TRAVIS_REPO_SLUG}
+  - provider: script
+    skip_cleanup: true
+    script: ./script/milestone_changelog.sh | node ./script/update_release_changelog.js
+    on:
+      tags: true
+      repo: ${TRAVIS_REPO_SLUG}

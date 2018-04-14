@@ -35,7 +35,7 @@ deploy:
       repo: ${TRAVIS_REPO_SLUG}
   - provider: script
     skip_cleanup: true
-    script: ./script/milestone_changelog.sh | node ./script/update_release_changelog.js
+    script: ./script/milestone_changelog.sh | yarn update_changelog
     on:
       tags: true
       repo: ${TRAVIS_REPO_SLUG}

@@ -2,6 +2,7 @@
 :plantuml-server-public: http://www.plantuml.com/plantuml
 :antora-link: https://antora.org[Antora]
 :toc:
+:icons: font
 
 Extension for https://github.com/asciidoctor/asciidoctor.js[Asciidoctor.js] that provides integration with http://plantuml.com[PlantUML]
 using https://github.com/plantuml/plantuml-server[PlantUML Server]
@@ -18,10 +19,24 @@ endif::[]
 
 == Overview
 
-The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram].
+The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram] as close as possible.
+Positional and named attributes are working as for original exension. Also PNG and SVG formats are supported.
 
-Unlike `Asciidoctor Diagram`, it uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
-Inside `image` tags produced by the extension the `src` attribute contains a link to PlantUML server.
+.Plant UML Example
+----
+[plantuml#myId,mydiagram,svg,role=sequence] <1> <2> <3>
+....
+@startuml
+alice -> bob
+@enduml
+....
+----
+<1> block style modifiers are supported
+<2> positional attributes are supported
+<3> named attributes are supported
+
+Unlike `Asciidoctor Diagram`, the extension uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
+Inside `image` tags produced by it, the `src` attribute contains a link to PlantUML server.
 
 [NOTE]
 ====
@@ -44,7 +59,7 @@ One could easily deploy it as Docker container as described in https://github.co
 
 === Configuration
 
-Extension can be configured via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
+Extension behaviour can be configured via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
 
 .Supported configuration attributes
 [cols="3,9"]

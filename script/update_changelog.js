@@ -1,10 +1,8 @@
-const getStdin = require('get-stdin')
-
 const octokit = require('@octokit/rest')()
 octokit.authenticate({type: 'token', token: process.env.GITHUB_TOKEN})
 
 const foo = async () => {
-  const str = await getStdin()
+  const str = require('fs').readFileSync(`${process.env.TRAVIS_TAG}.changelog`, 'utf-8')
 
   const release = await octokit.repos.getReleaseByTag({
     owner: 'eshepelyuk', repo: 'asciidoctor-plantuml.js', tag: process.env.TRAVIS_TAG

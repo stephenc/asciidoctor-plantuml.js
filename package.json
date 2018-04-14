@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-plantuml",
-  "version": "0.8.3",
+  "version": "0.8.2",
   "description": "PlantUML support for Asciidoctor.JS.",
   "main": "dist/node/asciidoctor-plantuml.js",
   "files": [
@@ -23,7 +23,6 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "get-stdin": "^6.0.0",
     "jasmine": "3.0.0",
     "jasmine-expect": "^3.8.3",
     "jasmine-spec-reporter": "^4.2.1",
@@ -48,7 +47,7 @@
     "build:node": "bash ./script/build_node.sh",
     "build": "yarn build:browser && yarn build:node",
     "clean": "rm -rf dist",
-    "update_changelog": "node script/update_release_changelog.js"
+    "update_changelog": "node script/update_changelog.js"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [

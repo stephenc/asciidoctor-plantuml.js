@@ -15,19 +15,19 @@ install:
   - yarn install
 
 script:
-#  - yarn clean
+  - yarn clean
   - yarn lint
-#  - yarn build
-#  - yarn test
+  - yarn build
+  - yarn test
 
 deploy:
-#  - provider: npm
-#    skip_cleanup: true
-#    email: ${NPM_USER_EMAIL}
-#    api_key: ${NPM_USER_API_KEY}
-#    on:
-#      tags: true
-#      repo: ${TRAVIS_REPO_SLUG}
+  - provider: npm
+    skip_cleanup: true
+    email: ${NPM_USER_EMAIL}
+    api_key: ${NPM_USER_API_KEY}
+    on:
+      tags: true
+      repo: ${TRAVIS_REPO_SLUG}
   - provider: releases
     skip_cleanup: true
     api_key: ${GITHUB_TOKEN}

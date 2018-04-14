@@ -13,7 +13,7 @@ cache:
 install:
   - pip install --user loghub
   - yarn install
-  
+
 script:
   - yarn clean
   - yarn lint

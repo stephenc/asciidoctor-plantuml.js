@@ -1,12 +1,16 @@
 /* global Opal */
 const plantumlEncoder = require('plantuml-encoder')
 
-function createImageSrc (doc, text, target) {
+function serverUnavailableBlock (processor, parent, context, source, attrs) {
+  return processor.createBlock(parent, context, source, attrs)
+}
+
+function createImageSrc (doc, text, target, format) {
   const serverUrl = doc.getAttribute('plantuml-server-url')
   const shouldFetch = doc.isAttribute('plantuml-fetch-diagram')
-  let diagramUrl = `${serverUrl}/png/${plantumlEncoder.encode(text)}`
+  let diagramUrl = `${serverUrl}/${format}/${plantumlEncoder.encode(text)}`
   if (shouldFetch) {
-    diagramUrl = require('./fetch').save(diagramUrl, doc, target)
+    diagramUrl = require('./fetch').save(diagramUrl, doc, target, format)
   }
   return diagramUrl
 }
@@ -14,7 +18,8 @@ function createImageSrc (doc, text, target) {
 function plantumlBlock () {
   this.named('plantuml')
   this.onContext(['listing', 'literal'])
-  this.positionalAttributes('target')
+  this.positionalAttributes(['target', 'format'])
+
   this.process((parent, reader, attrs) => {
     const doc = parent.getDocument()
     const diagramText = reader.getString()
@@ -24,14 +29,21 @@ function plantumlBlock () {
 
     if (serverUrl) {
       const target = Opal.hash_get(attrs, 'target')
-      const imageUrl = createImageSrc(doc, diagramText, target)
-      const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
-      if (blockId) blockAttrs.id = blockId
-      return this.createImageBlock(parent, blockAttrs)
+      const format = Opal.hash_get(attrs, 'format') || 'png'
+      if (format === 'png' || format === 'svg') {
+        const imageUrl = createImageSrc(doc, diagramText, target, format)
+        const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
+        if (blockId) blockAttrs.id = blockId
+        return this.createImageBlock(parent, blockAttrs)
+      } else {
+        console.warn(`Skipping plantuml block. Format ${format} is unsupported by PlantUML`)
+        Opal.hash_put(attrs, 'role', role ? `${role} plantuml-error` : 'plantuml-error')
+        return serverUnavailableBlock(this, parent, Opal.hash_get(attrs, 'cloaked-context'), diagramText, attrs)
+      }
     } else {
       console.warn('Skipping plantuml block. PlantUML Server URL not defined in :plantuml-server-url: attribute.')
       Opal.hash_put(attrs, 'role', role ? `${role} plantuml-error` : 'plantuml-error')
-      return this.createBlock(parent, Opal.hash_get(attrs, 'cloaked-context'), diagramText, attrs)
+      return serverUnavailableBlock(this, parent, Opal.hash_get(attrs, 'cloaked-context'), diagramText, attrs)
     }
   })
 }

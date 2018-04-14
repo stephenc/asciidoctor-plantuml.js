@@ -15,7 +15,8 @@ alice -> bob
 @enduml`
 sharedSpec.LOCAL_URL = 'http://localhost:8080'
 sharedSpec.PLANTUML_REMOTE_URL = 'http://www.plantuml.com/plantuml'
-sharedSpec.DIAGRAM_SIZE = 1789
+sharedSpec.PNG_DIAGRAM_SIZE = 1789
+sharedSpec.SVG_DIAGRAM_SIZE = 2632
 sharedSpec.encodedDiagram = plantumlEncoder.encode(sharedSpec.DIAGRAM_SRC)
 
 /**
@@ -120,6 +121,39 @@ sharedSpec.run = function () {
         const literalBlock = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([], [], '', '....'))('.literalblock.plantuml-error')
         expect(literalBlock.find('img').length).toBe(0)
         expect(literalBlock.text()).toContain('@startuml')
+      })
+    })
+
+    describe('PlantUML format', () => {
+      it('should use png as default format for listing block', () => {
+        const src = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\''], '', '----'))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
+      })
+
+      it('should use png as default format for literal block', () => {
+        const src = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\''], '', '....'))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
+      })
+
+      it('should support explicit png format from positional attr', () => {
+        const src = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\'', 'png']))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
+      })
+
+      it('should support explicit svg format from positional attr', () => {
+        const src = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\'', 'svg']))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
+      })
+
+      it('should support format from named attr', () => {
+        const src = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['format=svg']))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
+      })
+
+      it('should generate HTML error when unsupported format used', () => {
+        const listingBlock = sharedSpec.toJQueryDOM(sharedSpec.asciidocContent([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\'', 'qwe']))('.listingblock.plantuml-error')
+        expect(listingBlock.find('img').length).toBe(0)
+        expect(listingBlock.text()).toContain('@startuml')
       })
     })
   })

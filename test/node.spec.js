@@ -18,7 +18,7 @@ describe('diagram fetching', () => {
     }
   })
 
-  it('should fetch when :plantuml-fetch-diagram: set', () => {
+  it('should by default fetch PNG when :plantuml-fetch-diagram: set', () => {
     const html = shared.toJQueryDOM(shared.asciidocContent([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:']))
 
     src = html('.imageblock.plantuml img').attr('src')
@@ -26,7 +26,32 @@ describe('diagram fetching', () => {
     expect(src).toEndWith('.png')
     expect(path.basename(src)).toBe(src)
     expect(fs.existsSync(src)).toBe(true)
-    expect(fs.statSync(src).size).toBe(shared.DIAGRAM_SIZE)
+    expect(fs.statSync(src).size).toBe(shared.PNG_DIAGRAM_SIZE)
+  })
+
+  it('should fetch PNG when positional attr :format: is png', () => {
+    const html = shared.toJQueryDOM(shared.asciidocContent([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,png']))
+
+    src = html('.imageblock.plantuml img').attr('src')
+
+    expect(src).toEndWith('.png')
+    expect(path.basename(src)).toBe(src)
+    expect(fs.existsSync(src)).toBe(true)
+    expect(fs.statSync(src).size).toBe(shared.PNG_DIAGRAM_SIZE)
+  })
+
+  it('should fetch SVG when positional attr :format: is svg', () => {
+    const html = shared.toJQueryDOM(shared.asciidocContent([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,svg']))
+
+    src = html('.imageblock.plantuml img').attr('src')
+
+    expect(src).toEndWith('.svg')
+    expect(path.basename(src)).toBe(src)
+    expect(fs.existsSync(src)).toBe(true)
+    expect(fs.statSync(src).size).toBe(shared.SVG_DIAGRAM_SIZE)
+    const svgContent = fs.readFileSync(src, 'utf-8').replace(/\r/gm, '')
+    expect(svgContent).toContain(shared.DIAGRAM_SRC)
+    expect(svgContent).toEndWith('</svg>')
   })
 
   it('should fetch to named file when positional attr :target: is set', () => {
@@ -37,7 +62,7 @@ describe('diagram fetching', () => {
     expect(src).toBe('myFile.png')
     expect(path.basename(src)).toBe(src)
     expect(fs.existsSync(src)).toBe(true)
-    expect(fs.statSync(src).size).toBe(shared.DIAGRAM_SIZE)
+    expect(fs.statSync(src).size).toBe(shared.PNG_DIAGRAM_SIZE)
   })
 
   it('should fetch to :imagesoutdir: if present and create nested folders', () => {
@@ -54,7 +79,7 @@ describe('diagram fetching', () => {
     expect(path.basename(src)).toBe(src)
     const diagramPath = path.format({dir: missingDir, base: src})
     expect(fs.existsSync(diagramPath)).toBe(true)
-    expect(fs.statSync(diagramPath).size).toBe(shared.DIAGRAM_SIZE)
+    expect(fs.statSync(diagramPath).size).toBe(shared.PNG_DIAGRAM_SIZE)
   })
 
   it('should add :imagesdir: to image destination if present', () => {
@@ -69,7 +94,7 @@ describe('diagram fetching', () => {
     expect(src).toStartWith('_images')
     expect(src).toEndWith('.png')
     expect(fs.existsSync(src)).toBe(true)
-    expect(fs.statSync(src).size).toBe(shared.DIAGRAM_SIZE)
+    expect(fs.statSync(src).size).toBe(shared.PNG_DIAGRAM_SIZE)
   })
 
   it('should use both :imagesoutdir: and :imagesdir: for fetching the image', () => {
@@ -87,6 +112,6 @@ describe('diagram fetching', () => {
     expect(src).toEndWith('.png')
     const diagramPath = path.format({dir: dir, base: src})
     expect(fs.existsSync(diagramPath)).toBe(true)
-    expect(fs.statSync(diagramPath).size).toBe(shared.DIAGRAM_SIZE)
+    expect(fs.statSync(diagramPath).size).toBe(shared.PNG_DIAGRAM_SIZE)
   })
 })

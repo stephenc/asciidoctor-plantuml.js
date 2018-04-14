@@ -4,10 +4,10 @@ const randomstring = require('randomstring')
 const path = require('path')
 const mkdirp = require('mkdirp')
 
-module.exports.save = function (diagramUrl, doc, target) {
+module.exports.save = function (diagramUrl, doc, target, format) {
   const dirPath = path.join(doc.getAttribute('imagesoutdir') || '', doc.getAttribute('imagesdir') || '')
   mkdirp.sync(dirPath)
-  const diagramName = `${target || randomstring.generate()}.png`
+  const diagramName = `${target || randomstring.generate()}.${format}`
   fs.writeFileSync(path.format({dir: dirPath, base: diagramName}), request('GET', diagramUrl).getBody())
   return diagramName
 }

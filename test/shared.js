@@ -15,7 +15,7 @@ alice -> bob
 @enduml`
 sharedSpec.LOCAL_URL = 'http://localhost:8080'
 sharedSpec.PLANTUML_REMOTE_URL = 'http://www.plantuml.com/plantuml'
-sharedSpec.PNG_DIAGRAM_SIZE = 1789
+sharedSpec.PNG_DIAGRAM_SIZE = 1787
 sharedSpec.SVG_DIAGRAM_SIZE = 2632
 sharedSpec.encodedDiagram = plantumlEncoder.encode(sharedSpec.DIAGRAM_SRC)
 

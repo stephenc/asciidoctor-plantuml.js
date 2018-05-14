@@ -300,11 +300,11 @@ asap@~2.0.3:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
 
-asciidoctor.js@^1.5.6-rc.1:
-  version "1.5.6-rc.1"
-  resolved "https://registry.yarnpkg.com/asciidoctor.js/-/asciidoctor.js-1.5.6-rc.1.tgz#8bdd07d817817e626bc3e2e09aa35500bfce4b3d"
+asciidoctor.js@1.5.6:
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/asciidoctor.js/-/asciidoctor.js-1.5.6.tgz#12f4810c62ea47867da145e819fc93b0674b5431"
   dependencies:
-    opal-runtime "1.0.2"
+    opal-runtime "1.0.3"
 
 asn1.js@^4.0.0:
   version "4.10.1"
@@ -2838,10 +2838,6 @@ get-port@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.2.0.tgz#dd7ce7de187c06c8bf353796ac71e099f0980ebc"
 
-get-stdin@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
-
 get-stream@3.0.0, get-stream@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-3.0.0.tgz#8e943d1358dc37555054ecbe2edb05aa174ede14"
@@ -3766,9 +3762,9 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jasmine-core@~3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.0.0.tgz#8cdb20cf336b1b86830edc58b1a8aac47455e94c"
+jasmine-core@~3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.1.0.tgz#a4785e135d5df65024dfc9224953df585bd2766c"
 
 jasmine-expect@^3.8.3:
   version "3.8.3"
@@ -3782,12 +3778,12 @@ jasmine-spec-reporter@^4.2.1:
   dependencies:
     colors "1.1.2"
 
-jasmine@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-3.0.0.tgz#e3d9476c0faf937d0f6982f73c847e5176eab1b5"
+jasmine@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/jasmine/-/jasmine-3.1.0.tgz#2bd59fd7ec6ec0e8acb64e09f45a68ed2ad1952a"
   dependencies:
     glob "^7.0.6"
-    jasmine-core "~3.0.0"
+    jasmine-core "~3.1.0"
 
 js-string-escape@^1.0.0:
   version "1.0.1"
@@ -4743,9 +4739,9 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-opal-runtime@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/opal-runtime/-/opal-runtime-1.0.2.tgz#dae7669f23943b3f3fbba77b718a7e4977f4af73"
+opal-runtime@1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/opal-runtime/-/opal-runtime-1.0.3.tgz#e81e5c2a2568bbb0b05743b427d035dd901485b7"
   dependencies:
     glob "6.0.4"
     xmlhttprequest "1.8.0"

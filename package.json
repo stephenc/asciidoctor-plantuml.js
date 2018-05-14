@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^15.2.6",
-    "asciidoctor.js": "^1.5.6-rc.1",
+    "asciidoctor.js": "1.5.6",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",
@@ -23,7 +23,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
-    "jasmine": "3.0.0",
+    "jasmine": "3.1.0",
     "jasmine-expect": "^3.8.3",
     "jasmine-spec-reporter": "^4.2.1",
     "karma": "2.0.0",
@@ -36,7 +36,7 @@
     "webpack-cli": "2.0.12"
   },
   "peerDependencies": {
-    "asciidoctor.js": "^1.5.6-rc.1"
+    "asciidoctor.js": "1.5.6"
   },
   "scripts": {
     "test:node": "jasmine --config=jasmine.json",

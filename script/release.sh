@@ -13,6 +13,6 @@ esac
 
 VERSION=$(cat package.json | jq -r .version)
 
-git commit -am "$VERSION"
+git commit -am "$VERSION [skip ci]"
 git tag -a "$VERSION" -m "$VERSION"
 git push --follow-tags

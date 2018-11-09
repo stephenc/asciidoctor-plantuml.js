@@ -11,7 +11,7 @@ cache:
     - node_modules
 
 install:
-  - pip install --user loghub
+  - pip install --user loghub==0.4
   - yarn install
 
 script:

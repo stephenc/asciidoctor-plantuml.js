@@ -16,7 +16,7 @@ sharedSpec.FIXTURES = {
     source: `@startuml
 alice -> bob
 @enduml`,
-    pngSize: 1789,
+    pngSize: 1788,
     svgSize: 2630,
     hasStartEndDirectives: true,
     format: 'plantuml'

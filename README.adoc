@@ -1,4 +1,4 @@
-= Asciidoctor Plantuml Extension
+= Asciidoctor PlantUML Extension
 :plantuml-server-public: http://www.plantuml.com/plantuml
 :antora-link: https://antora.org[Antora]
 :toc:
@@ -19,43 +19,71 @@ endif::[]
 
 == Overview
 
-The extension tries to mimic behaviour of `[plantuml]` block from https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram] as close as possible.
-Positional and named attributes are working as for original exension. Also PNG and SVG formats are supported.
+This extension mimics the behavior of the PlantUML support in https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram] as close as possible.
+Positional and named attributes, as well as, PNG and SVG formats are supported.
 
-.Plant UML Example
+.PlantUML example
 ----
 [plantuml#myId,mydiagram,svg,role=sequence] <1> <2> <3>
 ....
-@startuml
 alice -> bob
-@enduml
 ....
 ----
 <1> block style modifiers are supported
 <2> positional attributes are supported
 <3> named attributes are supported
 
-Unlike `Asciidoctor Diagram`, the extension uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
+Unlike _Asciidoctor Diagram_, this extension uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
 Inside `image` tags produced by it, the `src` attribute contains a link to PlantUML server.
 
 [NOTE]
 ====
-Since `PlantUML server` supports some other formats, it's possible to use http://ditaa.sourceforge.net/[Ditaa syntax] as well.
-Check http://plantuml.com/[PlantUML site] for list of supported diagrams.
+Since the _PlantUML server_ supports some other formats, it's possible to use the http://ditaa.sourceforge.net/[Ditaa] and http://www.graphviz.org/doc/info/lang.html[Graphiz (DOT)] syntax as well.
+Check the http://plantuml.com/[PlantUML website] for the complete list of supported diagrams.
 ====
+
+.Ditaa example
+----
+[ditaa]
+....
++----------+   +-------------+
+|cAAA      |   |             |
+|          +---+ Application |
+| Database |   |      cRED{d}|
+|       {s}|   +-------------+
++----------+
+....
+----
+
+NOTE: Only PNG generation is supported for Ditaa diagrams.
+
+.Graphviz (DOT) example
+----
+[graphviz]
+....
+digraph foo {
+  node [style=rounded]
+  node1 [shape=box]
+  node2 [fillcolor=yellow, style="rounded,filled", shape=diamond]
+  node3 [shape=record, label="{ a | b | c }"]
+
+  node1 -> node2 -> node3
+}
+....
+----
 
 === PlantUML server
 
 https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web application exposing HTTP API that allows generating diagram images on the fly.
 
-It can be used in two modes
+It can be used in two modes:
 
 * Public instance, for example this one {plantuml-server-public}.
 * For performance reason it's recommended to use private one.
 +
 One could easily deploy it as Docker container as described in https://github.com/plantuml/plantuml-server#how-to-run-the-server-with-docker[README].
 
-  $ docker run -d -p 8080:8080 plantuml/plantuml-server:jetty
+ $ docker run -d -p 8080:8080 plantuml/plantuml-server:jetty
 
 === Configuration
 

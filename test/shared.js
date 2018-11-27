@@ -187,6 +187,11 @@ sharedSpec.run = function () {
             const img = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['myFile']))('.imageblock.plantuml img')
             expect(img.attr('alt')).toBe('myFile')
           })
+
+          it('should set title on image', () => {
+            const title = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`, '.Sample diagram'], ['myFile']))('.imageblock.plantuml .title')
+            expect(title.text()).toBe('Sample diagram')
+          })
         })
 
         describe('PlantUML server URL', () => {

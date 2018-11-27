@@ -50,13 +50,14 @@ function plantumlBlock () {
     const serverUrl = doc.getAttribute('plantuml-server-url')
     const role = attrs.role
     const blockId = attrs.id
+    const title = attrs.title
 
     if (serverUrl) {
       const target = attrs.target
       const format = attrs.format || 'png'
       if (format === 'png' || format === 'svg') {
         const imageUrl = createImageSrc(doc, diagramText, target, format)
-        const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram'}
+        const blockAttrs = {role: role ? `${role} plantuml` : 'plantuml', target: imageUrl, alt: target || 'diagram', title}
         if (blockId) blockAttrs.id = blockId
         return this.createImageBlock(parent, blockAttrs)
       } else {

@@ -2,6 +2,7 @@
 const fs = require('fs')
 const tmp = require('tmp')
 const path = require('path')
+const hasha = require('hasha')
 tmp.setGracefulCleanup()
 
 const shared = require('./shared.js')
@@ -22,7 +23,7 @@ describe('diagram fetching', () => {
     const fixture = shared.FIXTURES[name]
     const inputFn = shared.asciidocContent(fixture)
     describe(fixture.title, () => {
-      it('should by default fetch PNG when :plantuml-fetch-diagram: set', () => {
+      it('should by default fetch PNG when :plantuml-fetch-diagram: set', async () => {
         const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:']))
 
         src = html('.imageblock.plantuml img').attr('src')
@@ -30,10 +31,11 @@ describe('diagram fetching', () => {
         expect(src).toEndWith('.png')
         expect(path.basename(src)).toBe(src)
         expect(fs.existsSync(src)).toBe(true)
-        expect(fs.statSync(src).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(src, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
 
-      it('should fetch PNG when positional attr :format: is png', () => {
+      it('should fetch PNG when positional attr :format: is png', async () => {
         const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,png']))
 
         src = html('.imageblock.plantuml img').attr('src')
@@ -41,12 +43,13 @@ describe('diagram fetching', () => {
         expect(src).toEndWith('.png')
         expect(path.basename(src)).toBe(src)
         expect(fs.existsSync(src)).toBe(true)
-        expect(fs.statSync(src).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(src, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
 
       // NOTE as of 15/11/2018, only png is supported (http://plantuml.com/ditaa)
       if (fixture.format !== 'ditaa') {
-        it('should fetch SVG when positional attr :format: is svg', () => {
+        it('should fetch SVG when positional attr :format: is svg', async () => {
           const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,svg']))
 
           src = html('.imageblock.plantuml img').attr('src')
@@ -54,7 +57,8 @@ describe('diagram fetching', () => {
           expect(src).toEndWith('.svg')
           expect(path.basename(src)).toBe(src)
           expect(fs.existsSync(src)).toBe(true)
-          expect(fs.statSync(src).size).toBe(fixture.svgSize)
+          const hash = await hasha.fromFile(src, {algorithm: 'md5'})
+          expect(hash).toBe(fixture.svgHash)
           const svgContent = fs.readFileSync(src, 'utf-8')
             .replace(/\r/gm, '')
             .replace(/\n$/, '') // remove trailing newline
@@ -66,7 +70,7 @@ describe('diagram fetching', () => {
         })
       }
 
-      it('should fetch to named file when positional attr :target: is set', () => {
+      it('should fetch to named file when positional attr :target: is set', async () => {
         const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['myFile']))
 
         src = html('.imageblock.plantuml img').attr('src')
@@ -74,10 +78,11 @@ describe('diagram fetching', () => {
         expect(src).toBe('myFile.png')
         expect(path.basename(src)).toBe(src)
         expect(fs.existsSync(src)).toBe(true)
-        expect(fs.statSync(src).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(src, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
 
-      it('should fetch to :imagesoutdir: if present and create nested folders', () => {
+      it('should fetch to :imagesoutdir: if present and create nested folders', async () => {
         const missingDir = path.join(tmp.dirSync({prefix: 'adoc_puml_'}).name, 'missing', 'dir')
 
         const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`,
@@ -91,10 +96,11 @@ describe('diagram fetching', () => {
         expect(path.basename(src)).toBe(src)
         const diagramPath = path.format({dir: missingDir, base: src})
         expect(fs.existsSync(diagramPath)).toBe(true)
-        expect(fs.statSync(diagramPath).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(diagramPath, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
 
-      it('should add :imagesdir: to image destination if present', () => {
+      it('should add :imagesdir: to image destination if present', async () => {
         const html = shared.toJQueryDOM(inputFn([
           `:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`,
           ':plantuml-fetch-diagram:',
@@ -106,10 +112,11 @@ describe('diagram fetching', () => {
         expect(src).toStartWith('_images')
         expect(src).toEndWith('.png')
         expect(fs.existsSync(src)).toBe(true)
-        expect(fs.statSync(src).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(src, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
 
-      it('should use both :imagesoutdir: and :imagesdir: for fetching the image', () => {
+      it('should use both :imagesoutdir: and :imagesdir: for fetching the image', async () => {
         const dir = tmp.dirSync({prefix: 'adoc_puml_'}).name
 
         const html = shared.toJQueryDOM(inputFn([
@@ -124,7 +131,8 @@ describe('diagram fetching', () => {
         expect(src).toEndWith('.png')
         const diagramPath = path.format({dir: dir, base: src})
         expect(fs.existsSync(diagramPath)).toBe(true)
-        expect(fs.statSync(diagramPath).size).toBe(fixture.pngSize)
+        const hash = await hasha.fromFile(diagramPath, {algorithm: 'md5'})
+        expect(hash).toBe(fixture.pngHash)
       })
     })
   }

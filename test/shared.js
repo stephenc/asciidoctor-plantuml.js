@@ -16,8 +16,8 @@ sharedSpec.FIXTURES = {
     source: `@startuml
 alice -> bob
 @enduml`,
-    pngSize: 1791,
-    svgSize: 2632,
+    pngHash: 'cf012b2c24924760cb2d6ceb53ecf4ee',
+    svgHash: '03a59f85e7c134e78072c64936715c93',
     hasStartEndDirectives: true,
     format: 'plantuml'
   },
@@ -27,8 +27,8 @@ alice -> bob
 alice -> bob
 bob ..> alice
 `,
-    pngSize: 3069,
-    svgSize: 5073,
+    pngHash: 'b762b1e08fd14929a7c66cde21ee50fc',
+    svgHash: 'fe1e5e571adeaf1b2b64f7cc72465a25',
     hasStartEndDirectives: false,
     format: 'plantuml'
   },
@@ -42,8 +42,7 @@ bob ..> alice
 |       {s}|   +-------------+
 +----------+
 `,
-    pngSize: 6120,
-    svgSize: 6120,
+    pngHash: '44ab1d8bee2efd5c7ad6104052ae08c2',
     hasStartEndDirectives: false,
     format: 'ditaa'
   },
@@ -59,8 +58,8 @@ digraph foo {
   node1 -> node2 -> node3
 }
 `,
-    pngSize: 7367,
-    svgSize: 3290,
+    pngHash: '56616a6dc2fa9859f0cce7f3f1e6c546',
+    svgHash: '8c760726ad7ae0bd58ababb53a2ee54a',
     hasStartEndDirectives: false,
     format: 'graphviz'
   }

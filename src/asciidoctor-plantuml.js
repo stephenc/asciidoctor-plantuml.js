@@ -38,6 +38,12 @@ function plantumlBlock () {
     const doc = parent.getDocument()
     const diagramType = this.name.toString()
     let diagramText = reader.getString()
+    // If "subs" attribute is specified, substitute accordingly.
+    // Be careful not to specify "specialcharacters" or your diagram code won't be valid anymore!
+    const subs = attrs.subs
+    if (subs) {
+      diagramText = parent.$apply_subs(diagramText, parent.$resolve_subs(subs), true)
+    }
     if (!/^@start([a-z]+)\n[\s\S]*\n@end\1$/.test(diagramText)) {
       if (diagramType === 'plantuml') {
         diagramText = '@startuml\n' + diagramText + '\n@enduml'

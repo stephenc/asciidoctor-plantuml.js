@@ -135,6 +135,40 @@ sharedSpec.run = function () {
   })
 
   describe('conversion to HTML', () => {
+    describe('substitutions', () => {
+      const fixture = {
+        title: 'PlantUML with attributes',
+        source: `@startuml
+{first-actor-name} -> {second-actor-name}
+@enduml`,
+        format: 'plantuml'
+      }
+      it('should apply substitutions', () => {
+        const encodedDiagram = plantumlEncoder.encode(`@startuml
+Guillaume -> Evgeny
+@enduml`)
+        const inputFn = sharedSpec.asciidocContent(fixture)
+        const attributes = [
+          `:plantuml-server-url: ${sharedSpec.LOCAL_URL}`,
+          ':first-actor-name: Guillaume',
+          ':second-actor-name: Evgeny',
+          '[subs=attributes]'
+        ]
+        const src = sharedSpec.toJQueryDOM(inputFn(attributes, ['format=svg']))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
+      })
+      it('should not apply substitutions', () => {
+        const encodedDiagram = plantumlEncoder.encode(fixture.source)
+        const inputFn = sharedSpec.asciidocContent(fixture)
+        const attributes = [
+          `:plantuml-server-url: ${sharedSpec.LOCAL_URL}`,
+          ':first-actor-name: Guillaume',
+          ':second-actor-name: Evgeny'
+        ]
+        const src = sharedSpec.toJQueryDOM(inputFn(attributes, ['format=svg']))('.imageblock.plantuml img').attr('src')
+        expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
+      })
+    })
     for (let name in sharedSpec.FIXTURES) {
       const fixture = sharedSpec.FIXTURES[name]
       describe(fixture.title, () => {

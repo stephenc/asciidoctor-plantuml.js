@@ -2,7 +2,10 @@
 const fs = require('fs')
 const tmp = require('tmp')
 const path = require('path')
+
 const hasha = require('hasha')
+const asciidoctorPlantuml = require('../src/asciidoctor-plantuml.js')
+const asciidoctor = require('asciidoctor.js')()
 tmp.setGracefulCleanup()
 
 const shared = require('./shared.js')
@@ -17,6 +20,29 @@ describe('diagram fetching', () => {
     } catch (e) {
       // ignore
     }
+  })
+
+  describe('virtual file system', () => {
+    it('should fetch image and use the VFS', () => {
+      const catalog = []
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create(), {
+        vfs: {
+          add: (image) => {
+            catalog.push(image)
+          }
+        }
+      })
+      const fixture = shared.FIXTURES.plantumlWithStartEndDirectives
+      const inputFn = shared.asciidocContent(fixture)
+      const input = inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'])
+      asciidoctor.convert(input, {extension_registry: registry})
+      expect(catalog.length).toBe(1)
+      expect(catalog[0].basename).toEndWith('.png') // REMIND: basename is a random string
+      expect(catalog[0].relative).toBe('.')
+      expect(catalog[0].mediaType).toBe('image/png')
+      const hash = hasha(catalog[0].contents, {algorithm: 'md5'})
+      expect(hash).toBe(fixture.pngHash)
+    })
   })
 
   for (let name in shared.FIXTURES) {

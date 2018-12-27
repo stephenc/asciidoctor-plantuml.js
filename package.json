@@ -33,7 +33,8 @@
     "puppeteer": "^1.2.0",
     "tmp": "0.0.33",
     "webpack": "4.1.1",
-    "webpack-cli": "2.0.12"
+    "webpack-cli": "2.0.12",
+    "upath": "^1.0.5"
   },
   "peerDependencies": {
     "asciidoctor.js": "1.5.6"

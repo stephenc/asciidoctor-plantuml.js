@@ -16,8 +16,8 @@ sharedSpec.FIXTURES = {
     source: `@startuml
 alice -> bob
 @enduml`,
-    pngHash: 'cf012b2c24924760cb2d6ceb53ecf4ee',
-    svgHash: '03a59f85e7c134e78072c64936715c93',
+    pngHash: 'c83dfd7ca39e84d43980940308c7f554',
+    svgHash: '4c7ee8a961ddb85715a427d5d51247fa',
     hasStartEndDirectives: true,
     format: 'plantuml'
   },
@@ -27,8 +27,8 @@ alice -> bob
 alice -> bob
 bob ..> alice
 `,
-    pngHash: 'b762b1e08fd14929a7c66cde21ee50fc',
-    svgHash: 'fe1e5e571adeaf1b2b64f7cc72465a25',
+    pngHash: '62f0d0672deb706c7cbff27df2a4ce1e',
+    svgHash: 'e4f1000fdee0da37f65e49279d0e8d31',
     hasStartEndDirectives: false,
     format: 'plantuml'
   },

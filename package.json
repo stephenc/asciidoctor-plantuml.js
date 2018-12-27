@@ -37,7 +37,7 @@
     "webpack-cli": "2.0.12"
   },
   "peerDependencies": {
-    "asciidoctor.js": "1.5.6"
+    "asciidoctor.js": "1.5.9"
   },
   "scripts": {
     "test:node": "jasmine --config=jasmine.json",

@@ -9,7 +9,7 @@
   "dependencies": {
     "mkdirp": "^0.5.1",
     "plantuml-encoder": "^1.2.5",
-    "randomstring": "^1.1.5",
+    "rusha": "^0.8.13",
     "sync-request": "^5.0.0"
   },
   "devDependencies": {

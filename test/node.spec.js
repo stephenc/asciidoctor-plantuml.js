@@ -59,6 +59,7 @@ describe('diagram fetching', () => {
 
         src = html('.imageblock.plantuml img').attr('src')
         expect(src).toEndWith('.png')
+        expect(src).toBe(`${fixture.basenameHash}.png`)
         expect(path.basename(src)).toBe(src)
         expect(fs.existsSync(src)).toBe(true)
         const hash = md5sum(fs.readFileSync(src, 'binary'))
@@ -70,7 +71,7 @@ describe('diagram fetching', () => {
 
         src = html('.imageblock.plantuml img').attr('src')
 
-        expect(src).toEndWith('.png')
+        expect(src).toBe('test.png')
         expect(path.basename(src)).toBe(src)
         expect(fs.existsSync(src)).toBe(true)
         const hash = md5sum(fs.readFileSync(src, 'binary'))
@@ -84,7 +85,7 @@ describe('diagram fetching', () => {
 
           src = html('.imageblock.plantuml img').attr('src')
 
-          expect(src).toEndWith('.svg')
+          expect(src).toBe('test.svg')
           expect(path.basename(src)).toBe(src)
           expect(fs.existsSync(src)).toBe(true)
 
@@ -127,6 +128,7 @@ describe('diagram fetching', () => {
         src = html('.imageblock.plantuml img').attr('src')
 
         expect(src).toEndWith('.png')
+        expect(src).toBe(`${fixture.basenameHash}.png`)
         expect(path.basename(src)).toBe(src)
         const diagramPath = path.format({dir: missingDir, base: src})
         expect(fs.existsSync(diagramPath)).toBe(true)
@@ -145,6 +147,7 @@ describe('diagram fetching', () => {
 
         expect(src).toStartWith('_images')
         expect(src).toEndWith('.png')
+        expect(path.basename(src)).toBe(`${fixture.basenameHash}.png`)
         expect(fs.existsSync(src)).toBe(true)
         const hash = md5sum(fs.readFileSync(src, 'binary'))
         expect(hash).toBe(fixture.pngHash)
@@ -163,6 +166,7 @@ describe('diagram fetching', () => {
         src = html('.imageblock.plantuml img').attr('src')
         expect(src).toStartWith('_images')
         expect(src).toEndWith('.png')
+        expect(path.basename(src)).toBe(`${fixture.basenameHash}.png`)
         const diagramPath = path.format({dir: dir, base: src})
         expect(fs.existsSync(diagramPath)).toBe(true)
         const hash = md5sum(fs.readFileSync(diagramPath, 'binary'))

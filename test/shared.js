@@ -18,6 +18,7 @@ alice -> bob
 @enduml`,
     pngHash: '5df44d9d739236262f5746860182827e',
     svgHash: '06c71ae4ec8e45fd06f1def8ac0c2e2a',
+    basenameHash: 'b4587e8276f29f20288b0d3eef353039fafa610e',
     hasStartEndDirectives: true,
     format: 'plantuml'
   },
@@ -29,6 +30,7 @@ bob ..> alice
 `,
     pngHash: '5894d1cd6f399cf084b18be8e4010c50',
     svgHash: 'ae2b19469c19be7e61ff88f9696cb159',
+    basenameHash: 'b2d6104c24493835888413f7bd423750b044fc7f',
     hasStartEndDirectives: false,
     format: 'plantuml'
   },
@@ -43,6 +45,7 @@ bob ..> alice
 +----------+
 `,
     pngHash: '4849113f73546151997ea02cf32831d5',
+    basenameHash: '2532bdb8c8712b770d870eb65e3fa5a22622fd48',
     hasStartEndDirectives: false,
     format: 'ditaa'
   },
@@ -60,6 +63,7 @@ digraph foo {
 `,
     pngHash: '630e0e1b38a2334468af5b6d489d73b7',
     svgHash: '2e12082a2099d334ca8f306e06f77f52',
+    basenameHash: 'e745ed72ac0f359ce97f95f3b3df87cff5df56f1',
     hasStartEndDirectives: false,
     format: 'graphviz'
   }

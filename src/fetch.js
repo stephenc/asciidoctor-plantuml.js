@@ -1,5 +1,5 @@
 const request = require('sync-request')
-const randomstring = require('randomstring')
+const rusha = require('rusha')
 const path = require('path')
 
 module.exports.save = function (diagramUrl, doc, target, format, vfs) {
@@ -7,7 +7,7 @@ module.exports.save = function (diagramUrl, doc, target, format, vfs) {
     vfs = require('./node-fs')
   }
   const dirPath = path.join(doc.getAttribute('imagesoutdir') || '', doc.getAttribute('imagesdir') || '')
-  const diagramName = `${target || randomstring.generate()}.${format}`
+  const diagramName = `${target || rusha.createHash().update(diagramUrl).digest('hex')}.${format}`
   vfs.add({
     relative: dirPath,
     basename: diagramName,

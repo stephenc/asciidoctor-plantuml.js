@@ -86,7 +86,30 @@ function plantumlBlock (context) {
   }
 }
 
+const antoraAdapter = (file, contentCatalog) => ({
+  add: (image) => {
+    const { component, version, module } = file.src
+    contentCatalog.addFile({
+      contents: image.contents,
+      src: {
+        component,
+        version,
+        module,
+        family: 'image',
+        mediaType: image.mediaType,
+        basename: image.basename,
+        relative: image.basename
+      }
+    })
+  }
+})
+
 module.exports.register = function register (registry, context = {}) {
+  // patch context in case of Antora
+  if (typeof context.contentCatalog !== 'undefined' && typeof context.contentCatalog.addFile !== 'undefined' && typeof context.contentCatalog.addFile === 'function' && typeof context.file !== 'undefined') {
+    context.vfs = antoraAdapter(context.file, context.contentCatalog)
+  }
+
   if (typeof registry.register === 'function') {
     registry.register(function () {
       this.block('plantuml', plantumlBlock(context))

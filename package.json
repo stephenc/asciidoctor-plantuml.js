@@ -1,6 +1,6 @@
 {
   "name": "asciidoctor-plantuml",
-  "version": "1.0.0",
+  "version": "0.0.15",
   "description": "PlantUML support for Asciidoctor.JS.",
   "main": "dist/node/asciidoctor-plantuml.js",
   "files": [
@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^15.2.6",
-    "asciidoctor.js": "1.5.9",
+    "asciidoctor.js": "^1.5.9",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",

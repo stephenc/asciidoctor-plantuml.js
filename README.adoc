@@ -108,33 +108,10 @@ E.g. `./assets/images`
 
 == Antora integration
 
-Integration is just the matter of enabling the extension in https://docs.antora.org/antora/1.0/playbook/playbook/[site playbook]
-and providing address of PlantUML server.
+Integration is just the matter of enabling the extension in https://docs.antora.org/antora/2.0/playbook/[site playbook]
+and providing address of PlantUML server via extension's config.
 
-I've created sample https://github.com/eshepelyuk/asciidoctor-plantuml-antora[Antora component] demonstrating usage of this extension.
-Below are the steps to build and run sample site with PlantUML support.
-
-. Clone project from GitHub
-
-  $ git clone https://github.com/eshepelyuk/asciidoctor-plantuml-antora.git
-  $ cd asciidoctor-plantuml-antora
-
-. Install required modules
-
-  $ yarn global add @antora/cli @antora/site-generator-default serve
-  $ yarn add asciidoctor.js asciidoctor-plantuml
-
-. Generate site
-
-  $ antora generate site.yml
-
-. Start web server
-
-  $ serve build
-
-. Check results
-
-Open http://localhost:5000 in browser.
+There's https://github.com/eshepelyuk/asciidoctor-plantuml-antora[sample repository] demonstrating usage of this extension in `Antora`.
 
 == Asciidoctor.js integration
 

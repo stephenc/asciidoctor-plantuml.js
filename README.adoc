@@ -15,6 +15,9 @@ image:https://travis-ci.org/eshepelyuk/asciidoctor-plantuml.js.svg?branch=master
 image:https://badge.fury.io/js/asciidoctor-plantuml.png["npm version", link="https://badge.fury.io/js/asciidoctor-plantuml"]
 
 image:https://img.shields.io/badge/code_style-standard-brightgreen.svg[https://standardjs.com]
+
+image:https://img.shields.io/badge/%F0%9F%A4%96-release%20notes-00B2EE.svg["Automated Release Notes by gren", link="https://github-tools.github.io/github-release-notes"]
+
 endif::[]
 
 == Overview

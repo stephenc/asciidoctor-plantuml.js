@@ -14,18 +14,18 @@ install:
 
 script:
   - yarn clean
-    #- yarn lint
+  - yarn lint
   - yarn build
-    #  - yarn test
+  - yarn test
 
 deploy:
-    #  - provider: npm
-    #    skip_cleanup: true
-    #    email: ${NPM_USER_EMAIL}
-    #    api_key: ${NPM_USER_API_KEY}
-    #    on:
-    #      tags: true
-    #      repo: ${TRAVIS_REPO_SLUG}
+  - provider: npm
+    skip_cleanup: true
+    email: ${NPM_USER_EMAIL}
+    api_key: ${NPM_USER_API_KEY}
+    on:
+      tags: true
+      repo: ${TRAVIS_REPO_SLUG}
   - provider: script
     skip_cleanup: true
     script: gren release -T ${GITHUB_TOKEN} -u eshepelyuk -r asciidoctor-plantuml.js --tags ${TRAVIS_TAG} --override --debug

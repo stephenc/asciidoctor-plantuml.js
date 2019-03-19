@@ -2,8 +2,8 @@ language: node_js
 
 node_js:
   - "9"
-python:
-  - "3.6"
+    #python:
+    # - "3.6"
 
 cache:
   yarn: true
@@ -11,7 +11,7 @@ cache:
     - node_modules
 
 install:
-  - pip install --user loghub==0.4
+  #  - pip install --user loghub==0.4
   - yarn install
 
 script:
@@ -20,23 +20,23 @@ script:
   - yarn build
   - yarn test
 
-deploy:
-  - provider: npm
-    skip_cleanup: true
-    email: ${NPM_USER_EMAIL}
-    api_key: ${NPM_USER_API_KEY}
-    on:
-      tags: true
-      repo: ${TRAVIS_REPO_SLUG}
-  - provider: releases
-    skip_cleanup: true
-    api_key: ${GITHUB_TOKEN}
-    on:
-      tags: true
-      repo: ${TRAVIS_REPO_SLUG}
-  - provider: script
-    skip_cleanup: true
-    script: ./script/milestone_changelog.sh > "${TRAVIS_TAG}.changelog" && cat "${TRAVIS_TAG}.changelog" && yarn update_changelog
-    on:
-      tags: true
-      repo: ${TRAVIS_REPO_SLUG}
+    #deploy:
+    #  - provider: npm
+    #    skip_cleanup: true
+    #    email: ${NPM_USER_EMAIL}
+    #    api_key: ${NPM_USER_API_KEY}
+    #    on:
+    #      tags: true
+    #      repo: ${TRAVIS_REPO_SLUG}
+    #  - provider: releases
+    #    skip_cleanup: true
+    #    api_key: ${GITHUB_TOKEN}
+    #    on:
+    #      tags: true
+    #      repo: ${TRAVIS_REPO_SLUG}
+    #  - provider: script
+    #    skip_cleanup: true
+    #    script: ./script/milestone_changelog.sh > "${TRAVIS_TAG}.changelog" && cat "${TRAVIS_TAG}.changelog" && yarn update_changelog
+    #    on:
+    #      tags: true
+    #      repo: ${TRAVIS_REPO_SLUG}

@@ -13,7 +13,6 @@
     "unxhr": "1.0.1"
   },
   "devDependencies": {
-    "@octokit/rest": "^15.2.6",
     "asciidoctor.js": "^1.5.9",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",

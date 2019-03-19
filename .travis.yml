@@ -2,8 +2,6 @@ language: node_js
 
 node_js:
   - "9"
-    #python:
-    # - "3.6"
 
 cache:
   yarn: true
@@ -11,14 +9,13 @@ cache:
     - node_modules
 
 install:
-  #  - pip install --user loghub==0.4
   - yarn install
   - yarn global add github-release-notes 
 script:
   - yarn clean
-  - yarn lint
-  - yarn build
-  - yarn test
+    #- yarn lint
+    - yarn build
+    #- yarn test
 
 deploy:
     #  - provider: npm
@@ -30,7 +27,7 @@ deploy:
     #      repo: ${TRAVIS_REPO_SLUG}
   - provider: script
     skip_cleanup: true
-    script: gren release -T ${GITHUB_TOKEN} --tags ${TRAVIS_TAG} --override
+    script: gren release --tags ${TRAVIS_TAG} --override
     on:
       tags: true
       repo: ${TRAVIS_REPO_SLUG}

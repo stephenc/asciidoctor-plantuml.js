@@ -13,14 +13,14 @@ cache:
 install:
   #  - pip install --user loghub==0.4
   - yarn install
-
+  - yarn global add github-release-notes 
 script:
   - yarn clean
   - yarn lint
   - yarn build
   - yarn test
 
-    #deploy:
+deploy:
     #  - provider: npm
     #    skip_cleanup: true
     #    email: ${NPM_USER_EMAIL}
@@ -28,15 +28,9 @@ script:
     #    on:
     #      tags: true
     #      repo: ${TRAVIS_REPO_SLUG}
-    #  - provider: releases
-    #    skip_cleanup: true
-    #    api_key: ${GITHUB_TOKEN}
-    #    on:
-    #      tags: true
-    #      repo: ${TRAVIS_REPO_SLUG}
-    #  - provider: script
-    #    skip_cleanup: true
-    #    script: ./script/milestone_changelog.sh > "${TRAVIS_TAG}.changelog" && cat "${TRAVIS_TAG}.changelog" && yarn update_changelog
-    #    on:
-    #      tags: true
-    #      repo: ${TRAVIS_REPO_SLUG}
+  - provider: script
+    skip_cleanup: true
+    script: gren release -T ${GITHUB_TOKEN} --tags ${TRAVIS_TAG} --override
+    on:
+      tags: true
+      repo: ${TRAVIS_REPO_SLUG}

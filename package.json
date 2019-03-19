@@ -7,13 +7,13 @@
     "dist"
   ],
   "dependencies": {
+    "asciidoctor.js": "^1.5.9",
     "mkdirp": "^0.5.1",
     "plantuml-encoder": "^1.2.5",
     "rusha": "^0.8.13",
     "unxhr": "1.0.1"
   },
   "devDependencies": {
-    "asciidoctor.js": "^1.5.9",
     "cheerio": "1.0.0-rc.2",
     "eslint": "^4.19.0",
     "eslint-config-standard": "^11.0.0",
@@ -34,9 +34,6 @@
     "tmp": "0.0.33",
     "webpack": "4.1.1",
     "webpack-cli": "2.0.12"
-  },
-  "peerDependencies": {
-    "asciidoctor.js": "1.5.9"
   },
   "scripts": {
     "test:node": "jasmine --config=jasmine.json",

@@ -28,7 +28,7 @@ deploy:
     #      repo: ${TRAVIS_REPO_SLUG}
   - provider: script
     skip_cleanup: true
-    script: gren release -T ${GITHUB_TOKEN} -u eshepelyuk -r asciidoctor-plantuml.js --tags ${TRAVIS_TAG} --override
+    script: gren release -T ${GITHUB_TOKEN} -u eshepelyuk -r asciidoctor-plantuml.js --tags ${TRAVIS_TAG} --override --debug
     on:
       tags: true
       repo: ${TRAVIS_REPO_SLUG}

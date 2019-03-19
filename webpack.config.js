@@ -9,7 +9,9 @@ const config = {
     library: 'AsciidoctorPlantuml'
   },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/fetch$/)
+    new webpack.IgnorePlugin(/^\.\/fetch$/),
+    new webpack.IgnorePlugin(/^\.\/node-fs$/),
+    new webpack.IgnorePlugin(/^\.\/node-http$/)
   ],
   mode: 'production'
 }

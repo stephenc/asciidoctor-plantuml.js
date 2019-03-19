@@ -12,8 +12,7 @@ const isPNG = function (str) {
 
 const extractChunks = function (str) {
   // read signature
-  const sig = str.substr(0, 8)
-  if (!isPNG(sig)) return false
+  if (!isPNG(str)) return false
   str = str.substr(8) // chomp sig
   const chunks = []
   // read chunk list

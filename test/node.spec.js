@@ -5,6 +5,7 @@ const path = require('path')
 
 const hasha = require('hasha')
 const png = require('./png-metadata.js')
+const cheerio = require('cheerio')
 const asciidoctorPlantuml = require('../src/asciidoctor-plantuml.js')
 const asciidoctor = require('asciidoctor.js')()
 tmp.setGracefulCleanup()
@@ -28,7 +29,7 @@ describe('diagram fetching', () => {
   })
 
   describe('virtual file system', () => {
-    it('should fetch image and use the VFS', () => {
+    it('should fetch an image and add it to the VFS', () => {
       const catalog = []
       const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create(), {
         vfs: {
@@ -47,6 +48,71 @@ describe('diagram fetching', () => {
       expect(catalog[0].mediaType).toBe('image/png')
       const hash = md5sum(catalog[0].contents.toString('binary'), {algorithm: 'md5'})
       expect(hash).toBe(fixture.pngHash)
+    })
+
+    it('should get a target diagram using the VFS', () => {
+      const cache = {
+        'alice-bob.puml': `@startuml
+alice -> bob
+@enduml
+`
+      }
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create(), {
+        vfs: {
+          read: (target) => {
+            return cache[target]
+          }
+        }
+      })
+      const html = asciidoctor.convert(`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}
+
+plantuml::alice-bob.puml[format=png]`, {extension_registry: registry})
+
+      const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
+      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+    })
+  })
+
+  describe('block macro', () => {
+    it('should resolve the plantuml block macro', () => {
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create())
+      const html = asciidoctor.convert(`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}
+
+plantuml::${__dirname}/fixtures/alice-bob.puml[format=png]`, {extension_registry: registry})
+
+      const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
+      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+    })
+
+    it('should resolve the plantuml block macro target (substitutes attributes)', () => {
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create())
+      const html = asciidoctor.convert(`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}
+:diagramsdir: ${__dirname}/fixtures
+
+plantuml::{diagramsdir}/alice-bob.puml[format=png]`, {extension_registry: registry})
+
+      const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
+      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+    })
+
+    it('should resolve the ditaa block macro', () => {
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create())
+      const html = asciidoctor.convert(`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}
+
+ditaa::${__dirname}/fixtures/app.ditaa[format=svg]`, {extension_registry: registry})
+
+      const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
+      expect(src).toBe('http://www.plantuml.com/plantuml/svg/SoWkIImgISaiIKpaqjQ50sq51GKaBaY4goRPqT5H0Gnge1W1QhYG-DfW4nmB2d8oanDBClFpmD8kYIM9IOd5gSYwauDSNQfJQX6wgujhQx3OZUmqBYw7rBmKi9C1')
+    })
+
+    it('should resolve the graphviz block macro', () => {
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create())
+      const html = asciidoctor.convert(`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}
+
+graphviz::${__dirname}/fixtures/nodes.dot[format=png]`, {extension_registry: registry})
+
+      const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
+      expect(src).toBe('http://www.plantuml.com/plantuml/png/FO_13e8m38RlUufcPpmevndUWt0OQv4bTILZHWdoxauT79eqN_hzRPivsPXGaa9_YtOQOH21LG44GO9sJWkJYV88IDWLVCvyj1EPNbuxkq0xU6OdBD4in2pF2lwsBdhr7I3KcVzizFOkuKYjzzH8JY9MmBOdDde52s_eSpdOTAUE8qxNihaqjTgKQYXWVkS3')
     })
   })
 

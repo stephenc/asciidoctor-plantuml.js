@@ -1,5 +1,6 @@
 /* eslint-env jasmine */
 const fs = require('fs')
+const stream = require('stream')
 const tmp = require('tmp')
 const path = require('path')
 
@@ -29,6 +30,27 @@ describe('diagram fetching', () => {
   })
 
   describe('virtual file system', () => {
+    beforeAll(() => {
+      jasmine.addMatchers({
+        toBeStringBufferNull: (util, customEqualityTesters) => ({
+          compare: (actual) => {
+            const result = {
+              pass: false
+            }
+            if (actual instanceof stream.Stream) {
+              result.pass = true
+            } else if (actual instanceof Buffer) {
+              result.pass = true
+            } else if (actual === null) {
+              result.pass = true
+            } else {
+              result.message = `Expected value to be Buffer, Stream or null but found ${typeof actual}`
+            }
+            return result
+          }
+        })
+      })
+    })
     it('should fetch an image and add it to the VFS', () => {
       const catalog = []
       const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create(), {
@@ -46,6 +68,7 @@ describe('diagram fetching', () => {
       expect(catalog[0].basename).toEndWith('.png') // REMIND: basename is a random string
       expect(catalog[0].relative).toBe('.')
       expect(catalog[0].mediaType).toBe('image/png')
+      expect(catalog[0].contents).toBeStringBufferNull()
       const hash = md5sum(catalog[0].contents.toString('binary'), {algorithm: 'md5'})
       expect(hash).toBe(fixture.pngHash)
     })

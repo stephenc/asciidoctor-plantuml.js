@@ -21,7 +21,7 @@ module.exports.save = function (diagramUrl, doc, target, format, vfs) {
     relative: dirPath,
     basename: diagramName,
     mediaType: format === 'svg' ? 'image/svg+xml' : 'image/png',
-    contents
+    contents: Buffer.from(contents, 'binary')
   })
   return diagramName
 }

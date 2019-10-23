@@ -29,7 +29,7 @@ alice -> bob
 bob ..> alice
 `,
     pngHash: '5894d1cd6f399cf084b18be8e4010c50',
-    svgHash: 'ae2b19469c19be7e61ff88f9696cb159',
+    svgHash: 'ce1202516fbd2adf5a936260e0233ef1',
     basenameHash: 'b2d6104c24493835888413f7bd423750b044fc7f',
     hasStartEndDirectives: false,
     format: 'plantuml'

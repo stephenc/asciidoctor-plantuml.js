@@ -142,18 +142,20 @@ function plantumlBlockMacro (name, context) {
 const antoraAdapter = (file, contentCatalog) => ({
   add: (image) => {
     const { component, version, module } = file.src
-    contentCatalog.addFile({
-      contents: image.contents,
-      src: {
-        component,
-        version,
-        module,
-        family: 'image',
-        mediaType: image.mediaType,
-        basename: image.basename,
-        relative: image.basename
-      }
-    })
+    if (!contentCatalog.getById({ component, version, module, family: 'image', relative: image.basename })) {
+      contentCatalog.addFile({
+        contents: image.contents,
+        src: {
+          component,
+          version,
+          module,
+          family: 'image',
+          mediaType: image.mediaType,
+          basename: image.basename,
+          relative: image.basename
+        }
+      })
+    }
   }
 })
 

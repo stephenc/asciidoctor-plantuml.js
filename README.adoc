@@ -107,6 +107,10 @@ Otherwise, `img` tags will have `src` attribute pointing to `:plantuml-server-ur
 |imagesoutdir
 |Analogue of https://asciidoctor.org/docs/asciidoctor-diagram/#image-output-location[Asciidoctor Diagram] attribute.
 E.g. `./assets/images`
+
+|plantuml-config-file
+|Analogue of https://github.com/asciidoctor/asciidoctor-diagram#plantuml[PlantUML config] attribute.
+
 |===
 
 == Antora integration

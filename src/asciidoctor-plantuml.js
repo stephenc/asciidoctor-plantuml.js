@@ -1,4 +1,5 @@
 const plantumlEncoder = require('plantuml-encoder')
+const fs = require('fs')
 
 /**
  * Convert an (Opal) Hash to JSON.
@@ -47,6 +48,15 @@ function processPlantuml (processor, parent, attrs, diagramType, diagramText, co
   if (subs) {
     diagramText = parent.$apply_subs(diagramText, parent.$resolve_subs(subs), true)
   }
+
+  const plantumlConfigFile = doc.getAttribute('plantuml-config-file')
+  if (plantumlConfigFile && fs.existsSync(plantumlConfigFile)) {
+    let plantumlConfig = fs.readFileSync(plantumlConfigFile)
+    if (plantumlConfig) {
+      diagramText = plantumlConfig + '\n' + diagramText
+    }
+  }
+
   if (!/^@start([a-z]+)\n[\s\S]*\n@end\1$/.test(diagramText)) {
     if (diagramType === 'plantuml') {
       diagramText = '@startuml\n' + diagramText + '\n@enduml'

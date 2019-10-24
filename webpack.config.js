@@ -13,7 +13,10 @@ const config = {
     new webpack.IgnorePlugin(/^\.\/node-fs$/),
     new webpack.IgnorePlugin(/^\.\/node-http$/)
   ],
-  mode: 'production'
+  mode: 'production',
+  node: {
+    fs: "empty"
+  }
 }
 
 module.exports = config

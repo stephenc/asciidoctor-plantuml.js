@@ -262,6 +262,24 @@ graphviz::${__dirname}/fixtures/nodes.dot[format=png]`, {extension_registry: reg
         const hash = md5sum(fs.readFileSync(diagramPath, 'binary'))
         expect(hash).toBe(fixture.pngHash)
       })
+
+      it('should use plantuml.cfg', async () => {
+        const html = shared.toJQueryDOM(inputFn([
+          `:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`,
+          ':plantuml-fetch-diagram:',
+          `:plantuml-config-file: ${__dirname}/plantuml.cfg`,
+          ':imagesdir: _images'
+        ]))
+
+        src = html('.imageblock.plantuml img').attr('src')
+
+        expect(src).toStartWith('_images')
+        expect(src).toEndWith('.png')
+        expect(path.basename(src)).toBe(`${fixture.basenameHashWithCFG}.png`)
+        expect(fs.existsSync(src)).toBe(true)
+        const hash = md5sum(fs.readFileSync(src, 'binary'))
+        expect(hash).toBe(fixture.pngHashWithCFG)
+      })
     })
   }
 

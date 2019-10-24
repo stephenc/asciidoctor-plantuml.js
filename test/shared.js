@@ -19,6 +19,8 @@ alice -> bob
     pngHash: '5df44d9d739236262f5746860182827e',
     svgHash: '06c71ae4ec8e45fd06f1def8ac0c2e2a',
     basenameHash: 'b4587e8276f29f20288b0d3eef353039fafa610e',
+    basenameHashWithCFG: '5d43a4859cf7fe1d30bf08505c67ca01939c51f3',
+    pngHashWithCFG: 'baddd6b9827b03e5ba4d3fbd0ddb752e',
     hasStartEndDirectives: true,
     format: 'plantuml'
   },
@@ -31,6 +33,8 @@ bob ..> alice
     pngHash: '5894d1cd6f399cf084b18be8e4010c50',
     svgHash: 'ce1202516fbd2adf5a936260e0233ef1',
     basenameHash: 'b2d6104c24493835888413f7bd423750b044fc7f',
+    basenameHashWithCFG: '6f4ad3ab85e583ce97cd31d9723f25ed72f246a4',
+    pngHashWithCFG: '6bc3c0000cec8e08d1b19351c5dbc4b2',
     hasStartEndDirectives: false,
     format: 'plantuml'
   },
@@ -46,6 +50,8 @@ bob ..> alice
 `,
     pngHash: '4849113f73546151997ea02cf32831d5',
     basenameHash: '2532bdb8c8712b770d870eb65e3fa5a22622fd48',
+    basenameHashWithCFG: '00d8c540c499225f7ca116073ed4ebcf5637aa20',
+    pngHashWithCFG: '4849113f73546151997ea02cf32831d5',
     hasStartEndDirectives: false,
     format: 'ditaa'
   },
@@ -64,6 +70,8 @@ digraph foo {
     pngHash: '630e0e1b38a2334468af5b6d489d73b7',
     svgHash: '2e12082a2099d334ca8f306e06f77f52',
     basenameHash: 'e745ed72ac0f359ce97f95f3b3df87cff5df56f1',
+    basenameHashWithCFG: '3fa88669485f983af270825edeb080910bb1416d',
+    pngHashWithCFG: '630e0e1b38a2334468af5b6d489d73b7',
     hasStartEndDirectives: false,
     format: 'graphviz'
   }

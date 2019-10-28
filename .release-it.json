@@ -1,7 +1,7 @@
 {
   "git": {
     "requireCommits": true,
-    "commit": false,
+    "commit": true,
     "push": true,
     "tag": true
   },

@@ -44,8 +44,7 @@
     "build:browser": "webpack",
     "build:node": "bash ./script/build_node.sh",
     "build": "yarn build:browser && yarn build:node",
-    "clean": "rm -rf dist",
-    "update_changelog": "node script/update_changelog.js"
+    "clean": "rm -rf dist"
   },
   "repository": "git+https://github.com/eshepelyuk/asciidoctor-plantuml.js.git",
   "keywords": [

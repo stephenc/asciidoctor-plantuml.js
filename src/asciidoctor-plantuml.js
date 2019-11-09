@@ -46,7 +46,7 @@ function processPlantuml (processor, parent, attrs, diagramType, diagramText, co
   // Be careful not to specify "specialcharacters" or your diagram code won't be valid anymore!
   const subs = attrs.subs
   if (subs) {
-    diagramText = parent.$apply_subs(diagramText, parent.$resolve_subs(subs), true)
+    diagramText = parent.$apply_subs(diagramText, parent.$resolve_subs(subs))
   }
 
   const plantumlConfigFile = doc.getAttribute('plantuml-config-file')

@@ -106,6 +106,9 @@ E.g. `./assets/images`
 |plantuml-config-file
 |Analogue of https://github.com/asciidoctor/asciidoctor-diagram#plantuml[PlantUML config] attribute.
 
+|plantuml-default-format
+|Sets the default output format, which is normally png. This can be overriden in specific diagrams.
+
 |===
 
 == Antora integration

@@ -286,6 +286,21 @@ Guillaume -> Evgeny
             expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
           })
 
+          it('should support format from plantuml-default-format', () => {
+            const src = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`, ':plantuml-default-format: svg'], []))('.imageblock.plantuml img').attr('src')
+            expect(src).toBe(`${sharedSpec.LOCAL_URL}/svg/${encodedDiagram}`)
+          })
+
+          it('should support explicit png format from positional attr overriding :plantuml-default-format: svg', () => {
+            const src = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`, ':plantuml-default-format: svg'], ['\'\'', 'png']))('.imageblock.plantuml img').attr('src')
+            expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
+          })
+
+          it('should support explicit png format from named attr overriding :plantuml-default-format: svg', () => {
+            const src = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`, ':plantuml-default-format: svg'], ['format=png']))('.imageblock.plantuml img').attr('src')
+            expect(src).toBe(`${sharedSpec.LOCAL_URL}/png/${encodedDiagram}`)
+          })
+
           if (fixture.hasStartEndDirectives) {
             it('should generate HTML error when unsupported format used', () => {
               const listingBlock = sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['\'\'', 'qwe']))('.listingblock.plantuml-error')

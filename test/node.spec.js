@@ -304,5 +304,24 @@ graphviz::${__dirname}/fixtures/nodes.dot[format=png]`, {extension_registry: reg
       asciidoctor.convert(input, {extension_registry: registry})
       expect(antoraContentCatalog.getFiles().length).toBe(1)
     })
+    it('should honor plantuml-default-format setting', () => {
+      const antoraContentCatalog = new ContentCatalog()
+      const registry = asciidoctorPlantuml.register(asciidoctor.Extensions.create(), {
+        contentCatalog: antoraContentCatalog,
+        file: {
+          src: {
+            component: 'test',
+            version: '1',
+            module: 'testmodule'
+          }
+        }
+      })
+      const fixture = shared.FIXTURES.plantumlWithStartEndDirectives
+      const inputFn = shared.asciidocContent(fixture)
+      const input = inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:', ':plantuml-default-format: svg'])
+      asciidoctor.convert(input, {extension_registry: registry})
+      expect(antoraContentCatalog.getFiles().length).toBe(1)
+      expect(antoraContentCatalog.getFiles()[0].src.basename).toEndWith('.svg')
+    })
   })
 })

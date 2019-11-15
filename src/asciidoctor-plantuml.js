@@ -72,7 +72,7 @@ function processPlantuml (processor, parent, attrs, diagramType, diagramText, co
   const title = attrs.title
   if (serverUrl) {
     const target = attrs.target
-    const format = attrs.format || 'png'
+    const format = attrs.format || doc.getAttribute('plantuml-default-format') || 'png'
     if (format === 'png' || format === 'svg') {
       const imageUrl = createImageSrc(doc, diagramText, target, format, context.vfs)
       const blockAttrs = {

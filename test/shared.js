@@ -296,6 +296,21 @@ Guillaume -> Evgeny
         })
       })
     }
+    it('should consume content', () => {
+      const fixture = {
+        title: 'PlantUML with peculiar content',
+        source: `@startuml
+[A] B [C]
+paragraph
+@enduml`,
+        format: 'plantuml'
+      }
+      const inputFn = sharedSpec.asciidocContent(fixture)
+      const memoryLogger = asciidoctor.MemoryLogger.create()
+      asciidoctor.LoggerManager.setLogger(memoryLogger)
+      sharedSpec.toJQueryDOM(inputFn([`:plantuml-server-url: ${sharedSpec.LOCAL_URL}`], ['format=svg']))('.imageblock.plantuml img').attr('src')
+      expect(memoryLogger.getMessages().length).toBe(0)
+    })
   })
 }
 

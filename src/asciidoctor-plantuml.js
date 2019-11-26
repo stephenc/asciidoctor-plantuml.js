@@ -30,9 +30,7 @@ function UndefinedPlantumlServer (message) {
 // eslint-disable-next-line new-parens
 UndefinedPlantumlServer.prototype = new Error
 
-function createImageSrc (doc, text, target, format, vfs) {
-  const serverUrl = doc.getAttribute('plantuml-server-url')
-  const shouldFetch = doc.isAttribute('plantuml-fetch-diagram')
+function createImageSrc (doc, serverUrl, shouldFetch, text, target, format, vfs) {
   let diagramUrl = `${serverUrl}/${format}/${plantumlEncoder.encode(text)}`
   if (shouldFetch) {
     diagramUrl = require('./fetch').save(diagramUrl, doc, target, format, vfs)
@@ -74,12 +72,21 @@ function processPlantuml (processor, parent, attrs, diagramType, diagramText, co
     const target = attrs.target
     const format = attrs.format || doc.getAttribute('plantuml-default-format') || 'png'
     if (format === 'png' || format === 'svg') {
-      const imageUrl = createImageSrc(doc, diagramText, target, format, context.vfs)
+      const inline = (attrs['options'] || doc.getAttribute('plantuml-default-options')) === 'inline'
+      const interactive = !inline && (attrs['options'] || doc.getAttribute('plantuml-default-options')) === 'interactive'
+      const shouldFetch = doc.isAttribute('plantuml-fetch-diagram') && (format === 'png' || !inline)
+      const imageUrl = createImageSrc(doc, serverUrl, shouldFetch, diagramText, target, format, context.vfs)
       const blockAttrs = {
         role: role ? `${role} plantuml` : 'plantuml',
         target: imageUrl,
         alt: target || 'diagram',
-        title
+        title,
+        format
+      }
+      if (inline) {
+        blockAttrs['inline-option'] = ''
+      } else if (interactive) {
+        blockAttrs['interactive-option'] = ''
       }
       if (blockId) blockAttrs.id = blockId
       return processor.createImageBlock(parent, blockAttrs)
@@ -149,30 +156,40 @@ function plantumlBlockMacro (name, context) {
   }
 }
 
-const antoraAdapter = (file, contentCatalog) => ({
-  add: (image) => {
-    const { component, version, module } = file.src
-    if (!contentCatalog.getById({ component, version, module, family: 'image', relative: image.basename })) {
-      contentCatalog.addFile({
-        contents: image.contents,
-        src: {
-          component,
-          version,
-          module,
-          family: 'image',
-          mediaType: image.mediaType,
-          basename: image.basename,
-          relative: image.basename
+const antoraAdapter = (file, contentCatalog, vfs) => {
+  const result = Object.assign(
+    {},
+    vfs = typeof vfs === 'undefined' || typeof vfs.read !== 'function' ? require('./node-fs') : vfs,
+    {
+      add: (image) => {
+        const { component, version, module } = file.src
+        if (!contentCatalog.getById({ component, version, module, family: 'image', relative: image.basename })) {
+          contentCatalog.addFile({
+            contents: image.contents,
+            src: {
+              component,
+              version,
+              module,
+              family: 'image',
+              mediaType: image.mediaType,
+              basename: image.basename,
+              relative: image.basename
+            }
+          })
         }
-      })
-    }
-  }
-})
+      },
+      read: (resourceId, format) => {
+        const target = contentCatalog.resolveResource(resourceId, file.src)
+        return target ? target.contents : vfs.read(resourceId, format)
+      }
+    })
+  return result
+}
 
 module.exports.register = function register (registry, context = {}) {
   // patch context in case of Antora
   if (typeof context.contentCatalog !== 'undefined' && typeof context.contentCatalog.addFile !== 'undefined' && typeof context.contentCatalog.addFile === 'function' && typeof context.file !== 'undefined') {
-    context.vfs = antoraAdapter(context.file, context.contentCatalog)
+    context.vfs = antoraAdapter(context.file, context.contentCatalog, context.vfs)
   }
 
   if (typeof registry.register === 'function') {

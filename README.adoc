@@ -17,8 +17,8 @@ toc::[]
 
 == Overview
 
-This extension mimics the behavior of the PlantUML support in https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram] as close as possible.
-Positional and named attributes, as well as, PNG and SVG formats are supported.
+This extension mimics the behavior of the PlantUML support in https://asciidoctor.org/docs/asciidoctor-diagram[Asciidoctor Diagram] as closely as possible.
+Positional and named attributes as well as PNG and SVG formats are supported.
 
 .PlantUML example
 ----
@@ -32,7 +32,7 @@ alice -> bob
 <3> named attributes are supported
 
 Unlike _Asciidoctor Diagram_, this extension uses https://github.com/plantuml/plantuml-server[PlantUML server] for displaying images.
-Inside `image` tags produced by it, the `src` attribute contains a link to PlantUML server.
+The default behavior is that generated `image` tags will have the `src` attribute contain a link to a PlantUML server.
 
 [NOTE]
 ====
@@ -72,7 +72,7 @@ digraph foo {
 
 === PlantUML server
 
-https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web application exposing HTTP API that allows generating diagram images on the fly.
+https://github.com/plantuml/plantuml-server[PlantUML server] is a standalone web application exposing an HTTP API that allows generating diagram images on the fly.
 
 It can be used in two modes:
 
@@ -87,7 +87,7 @@ One could easily deploy it as Docker container as described in https://github.co
 
 Extension behaviour can be configured via http://asciidoctor.org/docs/user-manual/#attributes[Asciidoctor attributes].
 
-.Supported configuration attributes
+.Supported global or page configuration attributes
 [cols="3,9"]
 |===
 |Attribute |Description
@@ -107,7 +107,10 @@ E.g. `./assets/images`
 |Analogue of https://github.com/asciidoctor/asciidoctor-diagram#plantuml[PlantUML config] attribute.
 
 |plantuml-default-format
-|Sets the default output format, which is normally png. This can be overriden in specific diagrams.
+|Sets the default output format, which is normally `png`. This can be overriden in a specific diagram with the `format` attribute.
+
+|plantuml-default-options
+|Sets the default for the `options` attribute. May be set to `inline` for inline svg, or `interactive` for interactive object.
 
 |===
 

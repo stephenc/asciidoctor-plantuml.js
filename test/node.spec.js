@@ -93,7 +93,7 @@ alice -> bob
 plantuml::alice-bob.puml[format=png]`, {extension_registry: registry})
 
       const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
-      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00`)
     })
   })
 
@@ -105,7 +105,7 @@ plantuml::alice-bob.puml[format=png]`, {extension_registry: registry})
 plantuml::${__dirname}/fixtures/alice-bob.puml[format=png]`, {extension_registry: registry})
 
       const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
-      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00`)
     })
 
     it('should resolve the plantuml block macro target (substitutes attributes)', () => {
@@ -116,7 +116,7 @@ plantuml::${__dirname}/fixtures/alice-bob.puml[format=png]`, {extension_registry
 plantuml::{diagramsdir}/alice-bob.puml[format=png]`, {extension_registry: registry})
 
       const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
-      expect(src).toBe('http://www.plantuml.com/plantuml/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00')
+      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/SoWkIImgAStDuNA0in9pCfDJ5NJj59BoaxWSKlDIG88m1W00`)
     })
 
     it('should resolve the ditaa block macro', () => {
@@ -126,7 +126,7 @@ plantuml::{diagramsdir}/alice-bob.puml[format=png]`, {extension_registry: regist
 ditaa::${__dirname}/fixtures/app.ditaa[format=svg]`, {extension_registry: registry})
 
       const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
-      expect(src).toBe('http://www.plantuml.com/plantuml/svg/SoWkIImgISaiIKpaqjQ50sq51GKaBaY4goRPqT5H0Gnge1W1QhYG-DfW4nmB2d8oanDBClFpmD8kYIM9IOd5gSYwauDSNQfJQX6wgujhQx3OZUmqBYw7rBmKi9C1')
+      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/svg/SoWkIImgISaiIKpaqjQ50sq51GKaBaY4goRPqT5H0Gnge1W1QhYG-DfW4nmB2d8oanDBClFpmD8kYIM9IOd5gSYwauDSNQfJQX6wgujhQx3OZUmqBYw7rBmKi9C1`)
     })
 
     it('should resolve the graphviz block macro', () => {
@@ -136,7 +136,7 @@ ditaa::${__dirname}/fixtures/app.ditaa[format=svg]`, {extension_registry: regist
 graphviz::${__dirname}/fixtures/nodes.dot[format=png]`, {extension_registry: registry})
 
       const src = cheerio.load(html)('.imageblock.plantuml img').attr('src')
-      expect(src).toBe('http://www.plantuml.com/plantuml/png/FO_13e8m38RlUufcPpmevndUWt0OQv4bTILZHWdoxauT79eqN_hzRPivsPXGaa9_YtOQOH21LG44GO9sJWkJYV88IDWLVCvyj1EPNbuxkq0xU6OdBD4in2pF2lwsBdhr7I3KcVzizFOkuKYjzzH8JY9MmBOdDde52s_eSpdOTAUE8qxNihaqjTgKQYXWVkS3')
+      expect(src).toBe(`${shared.PLANTUML_REMOTE_URL}/png/FO_13e8m38RlUufcPpmevndUWt0OQv4bTILZHWdoxauT79eqN_hzRPivsPXGaa9_YtOQOH21LG44GO9sJWkJYV88IDWLVCvyj1EPNbuxkq0xU6OdBD4in2pF2lwsBdhr7I3KcVzizFOkuKYjzzH8JY9MmBOdDde52s_eSpdOTAUE8qxNihaqjTgKQYXWVkS3`)
     })
   })
 
@@ -173,26 +173,82 @@ graphviz::${__dirname}/fixtures/nodes.dot[format=png]`, {extension_registry: reg
         it('should fetch SVG when positional attr :format: is svg', async () => {
           const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,svg']))
 
-          src = html('.imageblock.plantuml img').attr('src')
-
-          expect(src).toBe('test.svg')
-          expect(path.basename(src)).toBe(src)
-          expect(fs.existsSync(src)).toBe(true)
-
-          const data = fs.readFileSync(src, 'utf8')
-            // remove comments (otherwise the md5sum won't be stable)
-            .replace(/<!--[\s\S]*?-->/g, '')
-          const hash = hasha(data, {algorithm: 'md5'})
-          expect(hash).toBe(fixture.svgHash)
-          const svgContent = fs.readFileSync(src, 'utf-8')
-            .replace(/\r/gm, '')
-            .replace(/\n$/, '') // remove trailing newline
-          if (fixture.format === 'plantuml') {
-            // NOTE when using the plantuml format, the svg file includes the source
-            expect(svgContent).toContain(fixture.source)
-          }
-          expect(svgContent).toEndWith('</svg>')
+          checkSvgFile(html)
         })
+        it('should fetch SVG when named attr :format: is svg', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test,format=svg']))
+
+          checkSvgFile(html)
+        })
+        it('should fetch SVG when doc attr :plantuml-default-format: is svg', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:', ':plantuml-default-format: svg'], ['test']))
+
+          checkSvgFile(html)
+        })
+        it('should inline SVG when format is svg and named attribute opts=inline is present', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`], ['test', 'svg', 'opts=inline']), { safe: 'safe', attributes: { 'allow-uri-read': true } })
+          checkSvg(html)
+        })
+        it('should inline SVG when format is svg and page attribute plantuml-default-options is set to inline', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-default-options: inline'], ['test', 'svg']), { safe: 'safe', attributes: { 'allow-uri-read': true } })
+          checkSvg(html)
+        })
+        it('should inline SVG when format is svg and global attribute plantuml-default-options is set to inline', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`], ['test', 'svg']), { safe: 'safe', attributes: { 'allow-uri-read': true, 'plantuml-default-options': 'inline' } })
+          checkSvg(html)
+        })
+        it('should use <obj> tag when format is svg and named attribute opts=interactive is present (remote url)', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`], ['test', 'svg', 'opts=interactive']), { safe: 'safe', attributes: { 'allow-uri-read': true } })
+          const obj = html('.imageblock.plantuml > div > object')
+          expect(obj).toBeObject()
+          expect(obj.attr('data')).toContain(shared.PLANTUML_REMOTE_URL)
+        })
+        it('should use <obj> tag when format is svg and named attribute opts=interactive is present (local url)', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test', 'svg', 'opts=interactive']), { safe: 'safe', attributes: { 'allow-uri-read': true } })
+          checkObj(html)
+        })
+        it('should use <obj> tag when format is svg and page attribute plantuml-default-options is set to interactive (local url)', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:', ':plantuml-default-options: interactive'], ['test', 'svg']), { safe: 'safe', attributes: { 'allow-uri-read': true } })
+          checkObj(html)
+        })
+        it('should use <obj> tag when format is svg and global attribute plantuml-default-options is set to interactive (local url)', async () => {
+          const html = shared.toJQueryDOM(inputFn([`:plantuml-server-url: ${shared.PLANTUML_REMOTE_URL}`, ':plantuml-fetch-diagram:'], ['test', 'svg']), { safe: 'safe', attributes: { 'allow-uri-read': true, 'plantuml-default-options': 'interactive' } })
+          checkObj(html)
+        })
+      }
+      function checkObj (html) {
+        const obj = html('.imageblock.plantuml > div > object')
+        expect(obj).toBeObject()
+        expect(obj.attr('data')).toBe('test.svg')
+      }
+      function checkSvg (html) {
+        const svg = html('.imageblock.plantuml > div > svg')
+        expect(svg).toBeObject()
+        if (fixture.format === 'plantuml') {
+          // NOTE when using the plantuml format, the svg file includes the source
+          expect(svg.html()).toContain(fixture.source)
+        }
+      }
+      function checkSvgFile (html) {
+        const src = html('.imageblock.plantuml img').attr('src')
+
+        expect(src).toBe('test.svg')
+        expect(path.basename(src)).toBe(src)
+        expect(fs.existsSync(src)).toBe(true)
+
+        const data = fs.readFileSync(src, 'utf8')
+          // remove comments (otherwise the md5sum won't be stable)
+          .replace(/<!--[\s\S]*?-->/g, '')
+        const hash = hasha(data, { algorithm: 'md5' })
+        expect(hash).toBe(fixture.svgHash)
+        const svgContent = fs.readFileSync(src, 'utf-8')
+          .replace(/\r/gm, '')
+          .replace(/\n$/, '') // remove trailing newline
+        if (fixture.format === 'plantuml') {
+          // NOTE when using the plantuml format, the svg file includes the source
+          expect(svgContent).toContain(fixture.source)
+        }
+        expect(svgContent).toEndWith('</svg>')
       }
 
       it('should fetch to named file when positional attr :target: is set', () => {

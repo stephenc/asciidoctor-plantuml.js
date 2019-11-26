@@ -84,7 +84,7 @@ sharedSpec.PLANTUML_REMOTE_URL = 'http://www.plantuml.com/plantuml'
  * Convert an AsciiDoc content to a "JQuery" DOM
  * @param asciidocContent
  */
-sharedSpec.toJQueryDOM = (asciidocContent) => cheerio.load(asciidoctor.convert(asciidocContent, {extension_registry: registry}))
+sharedSpec.toJQueryDOM = (asciidocContent, options = {}) => cheerio.load(asciidoctor.convert(asciidocContent, Object.assign(options, {extension_registry: registry})))
 
 /**
  * Generate an AsciiDoc content containing a PlantUML diagram

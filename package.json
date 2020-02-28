@@ -55,6 +55,9 @@
     "diagram",
     "ditaa"
   ],
+  "resolutions": {
+    "upath": "1.2.0"
+  },
   "author": "Evgeny Shepelyuk",
   "license": "ISC",
   "bugs": {

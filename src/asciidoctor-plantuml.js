@@ -83,13 +83,16 @@ function processPlantuml (processor, parent, attrs, diagramType, diagramText, co
         title,
         format
       }
+      const opts = {}
       if (inline) {
         blockAttrs['inline-option'] = ''
+        opts['inline'] = ''
       } else if (interactive) {
         blockAttrs['interactive-option'] = ''
+        opts['interactive'] = ''
       }
       if (blockId) blockAttrs.id = blockId
-      return processor.createImageBlock(parent, blockAttrs)
+      return processor.createImageBlock(parent, blockAttrs, opts)
     } else {
       throw new UnsupportedFormat(`Format '${format}' is unsupported. Only 'png' and 'svg' are supported by the PlantUML server`)
     }
